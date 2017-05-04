@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1446667744 source:c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\main.cpp
+	<iostream>
+
+1493845348 source:c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\src\gercarquiz.cpp
+	"GerCarQuiz.h"
+
+1493864186 c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\include\gercarquiz.h
+	<stdlib.h>
+	"Quiz.h"
+
+1493863809 c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\include\quiz.h
+	<string>
+
