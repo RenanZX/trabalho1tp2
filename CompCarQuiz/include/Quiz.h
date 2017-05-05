@@ -1,5 +1,7 @@
 #ifndef QUIZ_H
 #define QUIZ_H
+#include <stdio.h>
+#include <stdlib.h>
 #include <string>
 
 using namespace std;

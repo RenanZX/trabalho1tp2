@@ -1,14 +1,26 @@
 # depslib dependency file v1.0
-1446667744 source:c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\main.cpp
+1493942709 source:c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\main.cpp
 	<iostream>
 
-1493845348 source:c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\src\gercarquiz.cpp
+1493955298 source:c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\src\gercarquiz.cpp
 	"GerCarQuiz.h"
 
-1493864186 c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\include\gercarquiz.h
+1493955218 c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\include\gercarquiz.h
+	<stdio.h>
 	<stdlib.h>
+	"stubQuiz.h"
+
+1493938267 c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\include\quiz.h
+	<stdio.h>
+	<stdlib.h>
+	<string>
+
+1493943435 c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\include\stubquiz.h
+	<iostream>
+
+1493938432 source:c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\src\quiz.cpp
 	"Quiz.h"
 
-1493863809 c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\include\quiz.h
-	<string>
+1493930588 source:c:\users\renan\documents\projetos c++\tbtp2\compcarquiz\src\stubquiz.cpp
+	"stubQuiz.h"
 
