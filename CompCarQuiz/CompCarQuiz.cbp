@@ -23,9 +23,11 @@
 		</Compiler>
 		<Unit filename="include/GerCarQuiz.h" />
 		<Unit filename="include/Quiz.h" />
+		<Unit filename="include/stubQuiz.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/GerCarQuiz.cpp" />
 		<Unit filename="src/Quiz.cpp" />
+		<Unit filename="src/stubQuiz.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

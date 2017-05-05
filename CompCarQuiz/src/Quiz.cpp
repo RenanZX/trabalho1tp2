@@ -116,14 +116,14 @@ Quiz::Quiz()
     l = new listaPR();
     FILE* f = fopen("arQ.dat","wt");
     if(f!=NULL){
-        arq = fread(arq,sizeof(string),1,f);
+     //   arq = fread(arq,sizeof(string),1,f);
     }
     fclose(f);
 }
 
 void Quiz::EditPergResp(Perg novap,Resp novar,float ind)
 {
-    l->SetAttrEl(&novap,&novar,ind);
+   // l->SetAttrEl(&novap,&novar,ind);
 }
 
 void Quiz::deletarPerg(float ind)
@@ -133,5 +133,14 @@ void Quiz::deletarPerg(float ind)
 
 void Quiz::CarregarPerguntas()
 {
+    FILE *f = fopen(arq.c_str(),"rt");
+    int ind;
+    Perg p;
+    Resp r;
 
+    if(f!=NULL){
+        while(!feof(f)){
+            //ind = fread(ind,sizeof(int),)
+        }
+    }
 }
