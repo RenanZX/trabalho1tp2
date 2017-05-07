@@ -1,6 +1,6 @@
 #ifndef GERCARQUIZ_H
 #define GERCARQUIZ_H
-#include <stdio.h>
+#include <stdio.h>  /*bibliotecas*/
 #include <stdlib.h>
 #include <string>
 #include <direct.h>
