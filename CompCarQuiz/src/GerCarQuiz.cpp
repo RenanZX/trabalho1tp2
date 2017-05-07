@@ -51,7 +51,7 @@ bool GerQuiz::carregaQuiz() /*carrega o arquivo com o quiz*/
 
 void GerQuiz::AddPerguntas()/*adiciona perguntas ao arquivo com quiz*/
 {
-    string saida,str,aux;
+    string saida,str;
     char ver;
 
     system(CLEAR);
