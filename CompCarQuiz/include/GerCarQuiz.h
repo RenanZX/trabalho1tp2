@@ -30,13 +30,13 @@ private:
     static const int LOGQUIZ;
     static const int DELQUIZ;
     static const int EDITQUIZ;
-    void carregaQuiz();/*seta um quiz de um arquivo*/
+    void carregaQuiz();
     void EditarQuiz();
     void ApagarQuiz();
 public:
-    GerQuiz();
+    GerQuiz(); /*construtor*/
     ~GerQuiz();
-    void GerIU();
+    void GerIU(); /*interface com o usuario*/
 };
 
 #endif // GERCARQUIZ_H
