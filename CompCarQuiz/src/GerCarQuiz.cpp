@@ -167,7 +167,6 @@ string GerQuiz::BuscPer(string ind)
 /*construtor*/
 GerQuiz::GerQuiz()
 {
-    mkdir("tkq"); /*cria um diretorio na raiz do usuario*/
     arquivo = "tkq/Quiz.bin";/*seta o nome do arquivo contendo o quiz junto ao seu destino*/
 }
 
@@ -180,6 +179,7 @@ void GerQuiz::GerIU()/*gerenciador de interface com o usuario*/
 {
     bool tr = true;
     int opt;
+    mkdir("tkq"); /*cria um diretorio na raiz do usuario*/
 
     while(tr){
         system(CLEAR);
@@ -268,4 +268,24 @@ void GerQuiz::ApagarQuiz()/*apaga um arquivo contendo um quiz ja existente*/
             remove(arquivo.c_str());
         }
     }
+}
+
+Quiz* GerQuiz::getQuiz()throw(runtime_error)
+{
+    Quiz* q = new StubQuiz();
+    char arr[100];
+    FILE *f = fopen(arquivo.c_str(),"rt");
+    try{
+        if(f!=NULL){
+            while(fgets(arr,sizeof(arr),f)){
+                PegaAttr(arr);
+                q->SetPerg(dat1,dat2,dat3);
+            }
+            fclose(f);
+            return q;
+        }
+    }catch(runtime_error &e){
+        fclose(f);
+    }
+    return q;
 }
