@@ -10,7 +10,7 @@
 #include <iostream>
 
 using namespace std;
-
+/*verifica qual a versao do SO*/
 #ifdef _WIN32
 #define CLEAR "cls"
 #elif LINUX
@@ -42,7 +42,7 @@ public:
     GerQuiz(); /*construtor*/
     ~GerQuiz();
     void GerIU(); /*interface com o usuario*/
-    Quiz* getQuiz()throw(runtime_error);
+    Quiz* getQuiz();
 };
 
 #endif // GERCARQUIZ_H

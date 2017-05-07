@@ -270,7 +270,7 @@ void GerQuiz::ApagarQuiz()/*apaga um arquivo contendo um quiz ja existente*/
     }
 }
 
-Quiz* GerQuiz::getQuiz()throw(runtime_error)
+Quiz* GerQuiz::getQuiz()
 {
     Quiz* q = new StubQuiz();
     char arr[100];
@@ -283,6 +283,8 @@ Quiz* GerQuiz::getQuiz()throw(runtime_error)
             }
             fclose(f);
             return q;
+        }else{
+            fclose(f);
         }
     }catch(runtime_error &e){
         fclose(f);
