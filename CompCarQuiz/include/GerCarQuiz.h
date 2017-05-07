@@ -22,12 +22,13 @@ class GerQuiz/*gerenciador de quiz*/
 private:
     void PegaAttr(string dado);
     void AddPerguntas();
-    void ReorganizarPerArq(string ind,string p,string r);
+    void ReorganizarPerArq(string editind,string novap);
+    string FormularPergArq(string n1,string n2,string n3);
     void EditPer();
     void DelPer();
     string BuscPer(string ind);
     string dat1,dat2,dat3;
-    string arquivo;
+    string arquivo,dir;
     static const int ADICIONARP;
     static const int DELELETARP;
     static const int EDITARP;
@@ -35,13 +36,13 @@ private:
     static const int LOGQUIZ;
     static const int DELQUIZ;
     static const int EDITQUIZ;
-    void carregaQuiz();
+    bool carregaQuiz();
     void EditarQuiz();
     void ApagarQuiz();
 public:
     GerQuiz(); /*construtor*/
     ~GerQuiz();
-    void GerIU(); /*interface com o usuario*/
+    void executar(); /*interface com o usuario*/
     Quiz* getQuiz();
 };
 
