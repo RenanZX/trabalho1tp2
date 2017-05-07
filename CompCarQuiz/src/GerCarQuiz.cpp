@@ -1,6 +1,6 @@
 #include "GerCarQuiz.h"
 
-const int GerQuiz::ADICIONARP = 1;
+const int GerQuiz::ADICIONARP = 1;  /*constantes*/
 const int GerQuiz::EDITARP = 2;
 const int GerQuiz::DELELETARP = 3;
 const int GerQuiz::LOGQUIZ = 1;
@@ -8,7 +8,7 @@ const int GerQuiz::EDITQUIZ = 2;
 const int GerQuiz::DELQUIZ = 3;
 const int GerQuiz::SAIR = 5;
 
-void GerQuiz::PegaAttr(string dado)
+void GerQuiz::PegaAttr(string dado) /*pega atributos da string lida do arquivo*/
 {
     int pos = 0;
 
@@ -21,11 +21,11 @@ void GerQuiz::PegaAttr(string dado)
     dat3 = dado.substr(0,dado.find("|"));
 }
 
-void GerQuiz::carregaQuiz()
+void GerQuiz::carregaQuiz() /*carrega o arquivo com o quiz*/
 {
     string str;
     char read[100];
-    FILE* f = fopen(arquivo.c_str(),"rt");
+    FILE* f = fopen(arquivo.c_str(),"rt");/*faz a leitura do arquivo*/
 
     if(f!=NULL){
         while(fgets(read,sizeof(read),f)){
@@ -34,14 +34,14 @@ void GerQuiz::carregaQuiz()
             cout << dat1 << " " << dat2 << " " << dat3 << endl;
         }
     }else{
-        fclose(f);
-        f = fopen(arquivo.c_str(),"wt");
+        fclose(f);/*caso o arquivo nao exista ele e fechado e aberto novamente para escrita*/
+        f = fopen(arquivo.c_str(),"wt");/*e assim e criado um novo arquivo no diretorio do usuario*/
         cout << "nao existem perguntas" << endl;
     }
     fclose(f);
 }
 
-void GerQuiz::AddPerguntas()
+void GerQuiz::AddPerguntas()/*adiciona perguntas ao arquivo com quiz*/
 {
     string saida,str;
     char ver;
@@ -78,7 +78,7 @@ void GerQuiz::AddPerguntas()
     fclose(f);
 }
 
-void GerQuiz::ReorganizarPerArq(string ind,string p,string r)
+void GerQuiz::ReorganizarPerArq(string ind,string p,string r)/*reorganiza o arquivo com o quiz*/
 {
     FILE *f = fopen(arquivo.c_str(),"rt");
     FILE *f2 = fopen("novo","w");
@@ -104,7 +104,7 @@ void GerQuiz::ReorganizarPerArq(string ind,string p,string r)
     remove(arquivo.c_str());
     rename("novo",arquivo.c_str());
 }
-
+/*funçoes providas da interface com o usuario pelo gerenciador*/
 void GerQuiz::EditPer()
 {
     string data;
@@ -164,11 +164,11 @@ string GerQuiz::BuscPer(string ind)
     }
     return NULL;
 }
-
+/*construtor*/
 GerQuiz::GerQuiz()
 {
-    mkdir("tkq");
-    arquivo = "tkq/Quiz.bin";
+    mkdir("tkq"); /*cria um diretorio na raiz do usuario*/
+    arquivo = "tkq/Quiz.bin";/*seta o nome do arquivo contendo o quiz junto ao seu destino*/
 }
 
 GerQuiz::~GerQuiz()
@@ -176,7 +176,7 @@ GerQuiz::~GerQuiz()
 
 }
 
-void GerQuiz::GerIU()
+void GerQuiz::GerIU()/*gerenciador de interface com o usuario*/
 {
     bool tr = true;
     int opt;
@@ -184,7 +184,7 @@ void GerQuiz::GerIU()
     while(tr){
         system(CLEAR);
 
-        cout << "Gerenciador de Quiz" << endl;
+        cout << "Gerenciador de Quiz" << endl;/*opcoes mostradas ao usuario*/
         cout << LOGQUIZ << ".Carregar Quiz" << endl;
         cout << EDITQUIZ << ".Editar Quiz" << endl;
         cout << DELQUIZ << ".Apagar Quiz" << endl;
@@ -192,7 +192,7 @@ void GerQuiz::GerIU()
         cout << "Escolha a opcao:" << endl;
         cin  >> opt;
 
-        switch(opt){
+        switch(opt){/*opcoes do usuario*/
             case LOGQUIZ:
                 carregaQuiz();
                 break;
@@ -248,7 +248,7 @@ void GerQuiz::EditarQuiz()
 
 }
 
-void GerQuiz::ApagarQuiz()
+void GerQuiz::ApagarQuiz()/*apaga um arquivo contendo um quiz ja existente*/
 {
     char ch;
     bool existe = false;
