@@ -2,10 +2,15 @@
 #define GERCARQUIZ_H
 #include <stdio.h>  /*bibliotecas*/
 #include <stdlib.h>
-#include <string>
 #include <direct.h>
+#include <stdexcept>
+#include <windows.h>
+#include "Interfaces.h"
 #include "stubQuiz.h"
+#include <iostream>
 
+using namespace std;
+/*verifica qual a versao do SO*/
 #ifdef _WIN32
 #define CLEAR "cls"
 #elif LINUX
@@ -37,6 +42,7 @@ public:
     GerQuiz(); /*construtor*/
     ~GerQuiz();
     void GerIU(); /*interface com o usuario*/
+    Quiz* getQuiz();
 };
 
 #endif // GERCARQUIZ_H
