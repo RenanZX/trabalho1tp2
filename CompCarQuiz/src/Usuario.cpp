@@ -12,10 +12,10 @@ String^ senha;//[30];
 enum PERFIL {admin, estudante} perfil;
 bool logado = false;
 
-typedef struct Disciplinas{
+typedef struct listaDisciplinas{
 	Disciplina d;
 	Disciplinas* prox;
-} Disciplinas;
+} listaDisciplinas;
 
 String getNome(){
 	return nome;
@@ -43,6 +43,19 @@ int getPerfil(){
 		return 0;
 }
 
+String^ listarDisciplinas(){
+	String^ minhasDisciplinas = "";
+	listaDisciplinas* buscador;
+	
+	while(buscador != NULL){
+		minhasDisciplinas += buscador->d->nome+"\n";
+		buscador = buscador->prox;
+	}
+	
+	return minhasDisciplinas;
+
+}
+
 bool Login(String^ l, String^ s){
 	String^ loginLeitura;
 	String^ senhaLeitura;
@@ -66,14 +79,85 @@ bool Login(String^ l, String^ s){
 			nome = nomeLeitura;
 			perfil = ((perfilLeitura == 1) ? admin : estudante);
 			//Adicionar disciplinas
+			
+			String^ leitor;
+			listaDisciplinas* ld = malloc(sizeof(listaDisciplinas));
+			fscanf(disciplinasLeitura,"%[^\n]",&leitor);
+			while(leitor != NULL){
+				ld->d = GerDisciplinas.getDisciplina(leitor.toInt32());
+				ld->prox = malloc(sizeof(listaDisciplinas));
+				ld = ld->prox;
+			}
+			free(ld);
 			break;
 		}
 	} while (loginLeitura != EOF);
 
+	file.close();
 	return logado;
 }
 
 void Cadastrar(String^ l, String^ s, String^ n, int p, Disciplinas* d){
+	StreamWriter f = new StreamWriter("usuarios.bin");
+	f.Write( l + "|" + s + "|" + n + "|" + p );
 	
+	listaDisciplinas* ld = d;
+	while (ld != NULL){
+		f.Write("|");
+		f.Write(ld->id);
+		ld = ld->prox;
+	}
+	f.Write("\n");
+	
+	file.close();
+	return;
+}
+
+void criarDisciplina (String^ nome){
+	if (this.perfil == admin){
+		Disciplina.criar(nome);
+	}
+		
+	return;
+}
+
+void alterarDisciplina (String^ nome, listaTopicos* lT, listaQuizzes* lQ){
+	if (this.perfil == admin){
+		Disciplina.alterar(nome, lT, lQ);
+	}
+		
+	return;
+}
+
+void deletarDisciplina (String^ nome){
+	if (this.perfil == admin){
+		Disciplina.deletar(nome);
+	}
+		
+	return;
+}
+
+
+void criarQuiz (String^ pergunta, bool resposta, String^ nomeDisciplina, String^ nomeTopico){
+	if (this.perfil == admin){
+		Quiz.criar(pergunta, resposta, nomeDisciplina, nomeTopico);
+	}
+		
+	return;
+}
+
+void alterarQuiz (String^ pergunta, bool resposta, String^ nomeDisciplina, String^ nomeTopico){
+	if (this.perfil == admin){
+		Quiz.alterar(pergunta, resposta, nomeDisciplina, nomeTopico);
+	}
+		
+	return;
+}
+
+void deletarQuiz (String^ pergunta){
+	if (this.perfil == admin){
+		Quiz.deletar(pergunta);
+	}
+		
 	return;
 }
