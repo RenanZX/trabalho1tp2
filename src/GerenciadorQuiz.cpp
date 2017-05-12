@@ -23,7 +23,7 @@ bool GerQuiz::carregaQuiz() /*carrega o arquivo com o quiz*/
     fseek(f,0,SEEK_END);
     int tam = ftell(f);
     rewind(f);
-    if((f!=NULL)&&(tam>0)){
+    if((f!=NULL)&&(tam>0)){/*e necessario saber se o arquivo existe,e se existe e necessario saber se ele nao esta vazio*/
         cout << "Perguntas" << endl;
         while(fgets(read,sizeof(read),f)){
             strread = read;
@@ -48,36 +48,36 @@ void GerQuiz::CarregaQuizEd()throw(invalid_argument)   /*verifica se o arquivo c
     throw invalid_argument("selecione o quiz,antes de carrega-lo");
 }
 
-void GerQuiz::CriarQuiz()throw(invalid_argument)
+void GerQuiz::CriarQuiz()throw(invalid_argument)/*cria um novo arquivo com quiz*/
 {
     string nomfile;
     char confirma;
 
     while((confirma!='N')&&(confirma!='n')){
         cout << "Digite o nome do Quiz que deseja criar:" << endl;
-        getline(cin,nomfile,'\n');
-        FILE* f = fopen((diretorio+"/"+nomfile+".bin").c_str(),"rt");
+        getline(cin,nomfile,'\n');/*faz a leitura do nome do arquivo*/
+        FILE* f = fopen((diretorio+"/"+nomfile+".bin").c_str(),"rt");/*verifica se o arquivo existe*/
         if(f!=NULL){
             fclose(f);
-            throw invalid_argument("Erro Quiz ja existente");
+            throw invalid_argument("Erro Quiz ja existente");/*caso exista lança uma excessao*/
         }
         fclose(f);
-        f = fopen((diretorio+"/"+nomfile+".bin").c_str(),"wt");
-        cout << "Deseja criar mais quizes?(S/N)" << endl;
-        cin >> confirma;
+        f = fopen((diretorio+"/"+nomfile+".bin").c_str(),"wt");/*caso contrario sera gravado um novo arquivo*/
+        cout << "Deseja criar mais quizes?(S/N)" << endl;/*pergunta ao usuario se ele quer criar mais quizes*/
+        cin >> confirma;/*recebe a confirmacao*/
         cin.ignore(1000,'\n');
     }
 }
 
 void GerQuiz::AddPerguntas()throw(invalid_argument)/*adiciona perguntas ao arquivo com quiz*/
-{
+{   /*declaracao de variaveis*/
     string saida,strread;
     char verificar;
 
-    system(CLEAR);
-    carregaQuiz();
-    double menor = atof(data1.c_str());
-    double maior;
+    system(CLEAR);/*limpa a tela*/
+    carregaQuiz();/*carrega o quiz*/
+    double menor = atof(data1.c_str()); /*converte a ultima variavel lida ao carregar o quiz em menor*/
+    double maior;/*declara double maior*/
     FILE *f = fopen(arquivo.c_str(),"r+");
 
     while((verificar!='N')&&(verificar!='n')){
@@ -85,9 +85,9 @@ void GerQuiz::AddPerguntas()throw(invalid_argument)/*adiciona perguntas ao arqui
         getline(cin,strread,'\n');
         maior = atof(strread.c_str());
 
-        if((maior > 0)&&(maior > menor)){
+        if((maior > 0)&&(maior > menor)){/*verifica se o usuario digitou o index da pergunta corretamente*/
             saida = strread;
-            saida.append("|");
+            saida.append("|");/*prepara a string de saida a ser escrita no arquivo*/
             cout << "Digite a pergunta que deseja adicionar:" << endl;
             getline(cin,strread,'\n');
             saida.append(strread);
@@ -99,10 +99,10 @@ void GerQuiz::AddPerguntas()throw(invalid_argument)/*adiciona perguntas ao arqui
             cout << "Deseja adicionar mais perguntas?(S/N)" << endl;
             cin >> verificar;
             cin.ignore(1000,'\n');
-            fseek(f,0,SEEK_END);
-            fputs(saida.c_str(),f);
+            fseek(f,0,SEEK_END);/*procura a ultima posicao do arquivo lido*/
+            fputs(saida.c_str(),f);/*escreve a string de saida no arquivo*/
          }else{
-            throw invalid_argument("Erro fatal!Voce dados Inseridos incorretamente");
+            throw invalid_argument("Erro fatal!Voce dados Inseridos incorretamente");/*feedback de erro*/
         }
     }
     fclose(f);
@@ -171,8 +171,8 @@ void GerQuiz::EditPer()throw(invalid_argument)/*edita a pergunta no arquivo*/
     if(carregou){
         cout << "Indique o indice da pergunta que deseja editar:" << endl;
         getline(cin,data,'\n');
-        data = BuscPer(data);
-        if(data == ""){
+        data = BuscPer(data);/*busca a pergunta no arquivo*/
+        if(data == ""){/*testa se a pergunta e nula e lança uma excessao*/
             throw invalid_argument("Erro!Pergunta Inexistente.");
         }else{
             system(CLEAR);
@@ -183,7 +183,7 @@ void GerQuiz::EditPer()throw(invalid_argument)/*edita a pergunta no arquivo*/
             cout << "Digite sua nova resposta:" << endl;
             getline(cin,r,'\n');
 
-            p = FormularPergArq(ind,p,r);
+            p = FormularPergArq(ind,p,r);/*caso contrario recebera os dados do usuario e ao formular a nova pergunta ira reorganizar o arquivo de perguntas*/
             ReorganizarPerArq(ind,p);
         }
     }
@@ -197,10 +197,10 @@ void GerQuiz::DelPer()throw(invalid_argument)/*deleta a pergunta do arquivo*/
 
     cout << "Digite o indice da pergunta que deseja excluir:" << endl;
     cin >> indstr;
-    if((atof(indstr.c_str()) > 0)&&(atof(indstr.c_str()) <= atof(data1.c_str()))){
+    if((atof(indstr.c_str()) > 0)&&(atof(indstr.c_str()) <= atof(data1.c_str()))){/*ao converter o indice para double faz comparaçoes para validaçao*/
         cout << "Deletando Pergunta..." << endl;
-        ReorganizarPerArq(indstr,"");
-        cout << "Pergunta deletada com sucesso!" << endl;
+        ReorganizarPerArq(indstr,"");/*reorganiza o arquivo com uma string nula juntamente com o indice da pergunta apagada*/
+        cout << "Pergunta deletada com sucesso!" << endl;/*feedback ao usuario*/
     }else{
         throw invalid_argument("Erro!Pergunta Inexistente!");
     }
@@ -209,14 +209,14 @@ void GerQuiz::DelPer()throw(invalid_argument)/*deleta a pergunta do arquivo*/
 
 string GerQuiz::BuscPer(string ind)/*busca a pergunta no arquivo*/
 {
-    char read[100];
+    char linha[100];
     bool achou = false;
     string ask,comp;/*ask=pergunta comp=indice a comparar*/
     FILE *f = fopen(arquivo.c_str(),"rt");
 
     if(f!=NULL){
-        while((fgets(read,sizeof(read),f))&&(achou!=true)){/*passa pelo arquivo lendo as perguntas ate encontrar a pergunta desejada*/
-            ask = read;
+        while((fgets(linha,sizeof(linha),f))&&(achou!=true)){/*passa pelo arquivo lendo as perguntas ate encontrar a pergunta desejada*/
+            ask = linha;
             comp = ask.substr(0,ask.find("|"));
             if(comp == ind){/*caso os indices sejam iguais,logo a pergunta foi encontrada*/
                 achou = true;
@@ -238,29 +238,29 @@ GerQuiz::~GerQuiz()
 
 }
 
-void GerQuiz::SelecionarArq()throw(invalid_argument)
+void GerQuiz::SelecionarArq()throw(invalid_argument)    /*metodo selecionar arquivo*/
 {
     DIR *pasta;
     struct dirent *lsdir;
-    pasta = opendir((".\\"+diretorio).c_str());
+    pasta = opendir((".\\"+diretorio).c_str());/*abre um diretorio de arquivos contendo quizes*/
     int nroarquivo=1;
-    string saida;
-    string nomesarquivos;
+    string saida;   /*string saida que servira para armazenar o input do usuario*/
+    string nomesarquivos;   /*string nomesarquivos que contem todos os nomes de arquivos da pasta*/
 
     cout << "Lista de Quizes" << endl;
-    while((lsdir=readdir(pasta))!=NULL){
+    while((lsdir=readdir(pasta))!=NULL){/*faz a leitura dos quizes disponiveis*/
         saida = lsdir->d_name;
         if((saida!=".")&&(saida!="..")){
-            saida = saida.substr(0,saida.find(".bin"));
+            saida = saida.substr(0,saida.find(".bin"));/*imprime somente os nomes*/
             cout << nroarquivo << "." << saida << endl;
             nomesarquivos = saida+"|";
             nroarquivo++;
         }
     }
-    closedir(pasta);
-    int total = nroarquivo;
-    int antindex = 0;
-    int nextindex = 0;
+    closedir(pasta);/*fecha a pasta*/
+    int total = nroarquivo;/*total de arquivos na pasta*/
+    int antindex = 0;/*indice anterior*/
+    int nextindex = 0; /*proximo indice*/
 
     cout << "Digite numero do quiz ao qual deseja selecionar:" << endl;
     cin >> nroarquivo;
@@ -268,18 +268,18 @@ void GerQuiz::SelecionarArq()throw(invalid_argument)
 
     if((nroarquivo > 0)&&(nroarquivo <= total)){
         int counter = 0;
-        while(counter != nroarquivo){
+        while(counter != nroarquivo){/*percorre a string com os nomes dos arquivos ate encontrar o selecionado pelo usuario*/
             saida = nomesarquivos;
-            nextindex = saida.find("|");
+            nextindex = saida.find("|");/*pipes divisores de strings*/
             saida = saida.substr(antindex,nextindex);
             antindex = nextindex+1;
             counter++;
         }
-        arquivo = diretorio+"/"+saida+".bin";
-        cout << "Quiz selecionado com sucesso!" << endl;
+        arquivo = diretorio+"/"+saida+".bin";/*encontrando o nome do arquivo e setado juntamente com o diretorio onde ele sera armazenado*/
+        cout << "Quiz selecionado com sucesso!" << endl;/*caso de sucesso imprime para o usuario*/
         system("pause");
     }
-    throw invalid_argument("Erro!Falha na seleção do Quiz");
+    throw invalid_argument("Erro!Falha na seleção do Quiz");/*caso de falha lanca uma excessão*/
 }
 
 void GerQuiz::ApagarQuiz()throw(invalid_argument)/*apaga um arquivo contendo um quiz ja existente*/
@@ -295,16 +295,16 @@ void GerQuiz::ApagarQuiz()throw(invalid_argument)/*apaga um arquivo contendo um 
     }
     if((confirma=='s')||(confirma=='S')){
         FILE* f = fopen(arquivo.c_str(),"rt");
-        if(f!=NULL){
+        if(f!=NULL){/*faz a leitura do arquivo,se ele existe ele pode ser deletado,caso contrario nao*/
             existe = true;
         }
         fclose(f);
         if(existe){
-            remove(arquivo.c_str());
+            remove(arquivo.c_str());/*remove o arquivo pelo nome setado*/
         }else{
             throw invalid_argument("Erro!Quiz inexistente,verifique se o mesmo foi selecionado corretamente e/ou criado");
         }
-        data1 = "";
+        data1 = "";/*reinicia as variaveis data*/
         data2 = "";
         data3 = "";
     }
