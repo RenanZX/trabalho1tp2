@@ -1,16 +1,5 @@
 #include "GerenciadorQuiz.h"
 
-const int GerQuiz::ADICIONARP = 1;  /*constantes*/
-const int GerQuiz::EDITARP = 2;
-const int GerQuiz::DELELETARP = 3;
-const int GerQuiz::SAIRP = 4;
-const int GerQuiz::CREATEQUIZ = 1;
-const int GerQuiz::LOGQUIZ = 2;
-const int GerQuiz::EDITQUIZ = 4;
-const int GerQuiz::SELQUIZ = 3;
-const int GerQuiz::DELQUIZ = 5;
-const int GerQuiz::SAIR = 6;
-
 void GerQuiz::PegaAttr(string dado) /*pega atributos da string lida do arquivo*/
 {
     int pos = 0;
@@ -50,18 +39,16 @@ bool GerQuiz::carregaQuiz() /*carrega o arquivo com o quiz*/
     return carregou;
 }
 
-void GerQuiz::CarregaQuizEd()   /*verifica se o arquivo com o quiz esta selecionado para as devidas modificacoes do usuario*/
+void GerQuiz::CarregaQuizEd()throw(invalid_argument)   /*verifica se o arquivo com o quiz esta selecionado para as devidas modificacoes do usuario*/
 {
     if(arquivo!=""){    /*caso o arquivo do quiz tenha sido setado,o quiz e carregado na tela do usuario*/
         carregaQuiz();
         return;
-    }else{  /*caso contrario e mostrada uma mensagem de erro*/
-        cout << "selecione o quiz,antes de carrega-lo" << endl;
-        system("pause");
-    }
+    }  /*caso contrario e mostrada uma mensagem de erro*/
+    throw invalid_argument("selecione o quiz,antes de carrega-lo");
 }
 
-void GerQuiz::CriarQuiz()
+void GerQuiz::CriarQuiz()throw(invalid_argument)
 {
     string nomfile;
     char confirma;
@@ -69,15 +56,20 @@ void GerQuiz::CriarQuiz()
     while((confirma!='N')&&(confirma!='n')){
         cout << "Digite o nome do Quiz que deseja criar:" << endl;
         getline(cin,nomfile,'\n');
-        FILE* f = fopen((diretorio+"/"+nomfile+".bin").c_str(),"wt");
+        FILE* f = fopen((diretorio+"/"+nomfile+".bin").c_str(),"rt");
+        if(f!=NULL){
+            fclose(f);
+            throw invalid_argument("Erro Quiz ja existente");
+        }
         fclose(f);
+        f = fopen((diretorio+"/"+nomfile+".bin").c_str(),"wt");
         cout << "Deseja criar mais quizes?(S/N)" << endl;
         cin >> confirma;
         cin.ignore(1000,'\n');
     }
 }
 
-void GerQuiz::AddPerguntas()/*adiciona perguntas ao arquivo com quiz*/
+void GerQuiz::AddPerguntas()throw(invalid_argument)/*adiciona perguntas ao arquivo com quiz*/
 {
     string saida,strread;
     char verificar;
@@ -110,7 +102,7 @@ void GerQuiz::AddPerguntas()/*adiciona perguntas ao arquivo com quiz*/
             fseek(f,0,SEEK_END);
             fputs(saida.c_str(),f);
          }else{
-            cout << "dados inseridos invalidos digite novamente" << endl;
+            throw invalid_argument("Erro fatal!Voce dados Inseridos incorretamente");
         }
     }
     fclose(f);
@@ -167,7 +159,7 @@ string GerQuiz::FormularPergArq(string form1,string form2,string form3)
 }
 
 /*funçoes providas da interface com o usuario pelo gerenciador*/
-void GerQuiz::EditPer()/*edita a pergunta no arquivo*/
+void GerQuiz::EditPer()throw(invalid_argument)/*edita a pergunta no arquivo*/
 {
     string data;
     string ind,p,r;
@@ -181,7 +173,7 @@ void GerQuiz::EditPer()/*edita a pergunta no arquivo*/
         getline(cin,data,'\n');
         data = BuscPer(data);
         if(data == ""){
-            cout << "pergunta nao existe" << endl;
+            throw invalid_argument("Erro!Pergunta Inexistente.");
         }else{
             system(CLEAR);
             cout << data << endl;
@@ -197,7 +189,7 @@ void GerQuiz::EditPer()/*edita a pergunta no arquivo*/
     }
 }
 
-void GerQuiz::DelPer()/*deleta a pergunta do arquivo*/
+void GerQuiz::DelPer()throw(invalid_argument)/*deleta a pergunta do arquivo*/
 {
     system(CLEAR);
     carregaQuiz();
@@ -210,7 +202,7 @@ void GerQuiz::DelPer()/*deleta a pergunta do arquivo*/
         ReorganizarPerArq(indstr,"");
         cout << "Pergunta deletada com sucesso!" << endl;
     }else{
-        cout << "Pergunta inexistente" << endl;
+        throw invalid_argument("Erro!Pergunta Inexistente!");
     }
     system("pause");
 }
@@ -246,7 +238,7 @@ GerQuiz::~GerQuiz()
 
 }
 
-void GerQuiz::SelecionarArq()
+void GerQuiz::SelecionarArq()throw(invalid_argument)
 {
     DIR *pasta;
     struct dirent *lsdir;
@@ -285,95 +277,12 @@ void GerQuiz::SelecionarArq()
         }
         arquivo = diretorio+"/"+saida+".bin";
         cout << "Quiz selecionado com sucesso!" << endl;
-    }else{
-        cout << "Erro!Falha na seleção do Quiz" << endl;
+        system("pause");
     }
-    system("pause");
+    throw invalid_argument("Erro!Falha na seleção do Quiz");
 }
 
-void GerQuiz::executar()/*gerenciador de interface com o usuario*/
-{
-    bool fecha = false;
-    int opt;
-    mkdir(diretorio.c_str()); /*cria um diretorio na raiz do usuario*/
-    while(!fecha){
-        system(CLEAR);
-
-        cout << "Gerenciador de Quiz" << endl;/*opcoes mostradas ao usuario*/
-        cout << CREATEQUIZ << ".Criar Quiz" << endl;
-        cout << LOGQUIZ << ".Carregar Quiz" << endl;
-        cout << SELQUIZ << ".Selecionar Quiz" << endl;
-        cout << EDITQUIZ << ".Editar Quiz" << endl;
-        cout << DELQUIZ << ".Apagar Quiz" << endl;
-        cout << SAIR << ".Sair" << endl;
-        cout << "Escolha a opcao:" << endl;
-        cin  >> opt;
-        getchar();
-
-        switch(opt){/*opcoes do usuario*/
-            case CREATEQUIZ:
-                CriarQuiz();
-                break;
-            case LOGQUIZ:
-                CarregaQuizEd();
-                break;
-            case SELQUIZ:
-                SelecionarArq();
-                break;
-            case EDITQUIZ:
-                EditarQuiz();
-                break;
-            case DELQUIZ:
-                ApagarQuiz();
-                break;
-            case SAIR:
-                fecha = true;
-                break;
-            default:
-                break;
-            }
-        }
-}
-
-void GerQuiz::EditarQuiz()
-{
-    int opt;
-    bool fecha = false;
-
-    while(!fecha){/*enquanto o usuario nao fechar as opcoes o loop ainda perpetuara*/
-        system(CLEAR);/*interage com o usuario mostrando as opcoes*/
-
-        cout << "Gerenciador de Quiz" << endl;
-        cout << ADICIONARP << ".Adicionar Nova(s) Pergunta(s)" << endl;
-        cout << EDITARP << ".Editar Pergunta(s)" << endl;
-        cout << DELELETARP << ".Excluir Pergunta(s)" << endl;
-        cout << SAIRP << ".Sair" << endl;
-        cout << "Escolha uma opcao" << endl;
-        cin >> opt;
-        getchar();
-
-        switch(opt)
-        {
-            case ADICIONARP:
-                AddPerguntas();
-                break;
-            case EDITARP:
-                EditPer();
-                break;
-            case DELELETARP:
-                DelPer();
-                break;
-            case SAIRP:
-                fecha = true;
-                break;
-            default:
-                break;
-        }
-    }
-
-}
-
-void GerQuiz::ApagarQuiz()/*apaga um arquivo contendo um quiz ja existente*/
+void GerQuiz::ApagarQuiz()throw(invalid_argument)/*apaga um arquivo contendo um quiz ja existente*/
 {
     char confirma;
     bool existe = false;
@@ -393,8 +302,7 @@ void GerQuiz::ApagarQuiz()/*apaga um arquivo contendo um quiz ja existente*/
         if(existe){
             remove(arquivo.c_str());
         }else{
-            cout << "Erro!Quiz inexistente,verifique se o mesmo foi selecionado corretamente e/ou criado" << endl;
-            system("pause");
+            throw invalid_argument("Erro!Quiz inexistente,verifique se o mesmo foi selecionado corretamente e/ou criado");
         }
         data1 = "";
         data2 = "";
