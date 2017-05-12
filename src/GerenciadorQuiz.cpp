@@ -318,7 +318,7 @@ void GerQuiz::ApagarQuiz()throw(invalid_argument)/*apaga um arquivo contendo um 
     }
 }
 
-string GerQuiz::getQuizFileName()/*retorna o nome do ultimo arquivo setado*/
+string GerQuiz::getQuizFileName()/*retorna o destino juntamente com o nome do ultimo arquivo setado*/
 {
     return arquivo;
 }
