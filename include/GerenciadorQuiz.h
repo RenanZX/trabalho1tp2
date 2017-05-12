@@ -37,7 +37,7 @@ public:
     void AddPerguntas()throw(invalid_argument); /*adiciona perguntas ao quiz setado em questão*/
     void EditPer()throw(invalid_argument);/*editor de perguntas no arquivo do quiz*/
     void DelPer()throw(invalid_argument);/*deleta perguntas do arquivo com quiz*/
-    string getQuizFileName();/*retorna o nome do ultimo arquivo setado*/
+    string getQuizFileName();/*retorna o destino juntamente ao nome do ultimo arquivo setado*/
     string getFolderFilesName(); /*retorna a pasta contendo os quizes*/
 };
 
