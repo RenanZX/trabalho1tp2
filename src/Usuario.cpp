@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "disciplinas.h"
+#include "Usuario.h"
 
 using namespace System::IO;
 
