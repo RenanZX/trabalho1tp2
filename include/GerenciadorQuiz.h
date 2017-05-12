@@ -7,7 +7,6 @@
 #include <windows.h>
 #include <iostream>
 #include "dirent.h"
-#include "Builders.h"
 
 /*verifica qual a versao do SO*/
 #ifdef _WIN32
@@ -22,7 +21,7 @@ class GerQuiz /*gerenciador de quiz*/
 {
 private:
     void PegaAttr(string dado);/*captura atributos de dados lidos do arquivo com quiz*/
-    void AddPerguntas(); /*adiciona perguntas ao quiz setado em quest„o*/
+    void AddPerguntas(); /*adiciona perguntas ao quiz setado em quest√£o*/
     void ReorganizarPerArq(string editind,string novap);/*reorganiza o arquivo quiz com as perguntas*/
     string FormularPergArq(string form1,string form2,string form3); /*formula as perguntas no arquivo*/
     void EditPer();/*editor de perguntas no arquivo do quiz*/
