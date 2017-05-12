@@ -15,7 +15,6 @@ void InterfaceUserGerQuiz::EditarQuiz()throw(runtime_error)
 {
     int opt;
     bool fecha = false;
-    GerQuiz *g = new GerQuiz();
 
     while(!fecha){/*enquanto o usuario nao fechar as opcoes o loop ainda perpetuara*/
         try{
@@ -45,8 +44,7 @@ void InterfaceUserGerQuiz::EditarQuiz()throw(runtime_error)
                     break;
                 default:
                     break;
-                }
-            delete g;
+            }
         }catch(invalid_argument &e){
             system(CLEAR);
             cout << e.what() << endl;
@@ -60,7 +58,7 @@ void InterfaceUserGerQuiz::executar()throw(runtime_error)
 {
     bool fecha = false;
     int opt;
-    GerQuiz *g = new GerQuiz();
+    g = new GerQuiz();
     mkdir((g->getFolderFilesName()).c_str()); /*cria um diretorio na raiz do usuario*/
     while(!fecha){
         try{
@@ -95,11 +93,11 @@ void InterfaceUserGerQuiz::executar()throw(runtime_error)
                     break;
                 case SAIR:
                     fecha = true;
+                    free(g);
                     break;
                 default:
                     break;
                 }
-            delete g;
         }catch(invalid_argument &e){
             system(CLEAR);
             cout << e.what() << endl;
