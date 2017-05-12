@@ -1,7 +1,7 @@
 #ifndef CONTROLEINTERFACEUSUARIO_H
 #define CONTROLEINTERFACEUSUARIO_H
 
-#include "interfaces.h";
+#include "Interfaces.h"
 #include "GerenciadorQuiz.h"
 
 class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que irão interagir com o usuario*/
@@ -17,6 +17,7 @@ private:
     static const int DELQUIZ;
     static const int EDITQUIZ;
     static const int CREATEQUIZ;
+    GerQuiz *g;
     void EditarQuiz()throw(runtime_error);
 public:
     void executar()throw(runtime_error);
