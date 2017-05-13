@@ -5,7 +5,7 @@
 #include "GerenciadorQuiz.h"
 #include "Quiz.h"
 
-class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que ir„o interagir com o usuario*/
+class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que ir√£o interagir com o usuario*/
 {
 private:
     static const int ADICIONARP;/*constantes*/
@@ -23,7 +23,7 @@ private:
 public:
     void executar()throw(runtime_error);
 };
-//falta implementar
+
 class InterfaceUserQuiz:public InterfaceUsuarioQuiz
 {
 private:
