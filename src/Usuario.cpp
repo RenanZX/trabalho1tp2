@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "disciplinas.h"
+#include "GerenciaDisciplinas.h"
+#include "GerenciadorQuiz.h"
+#include "Usuario.h"
 
 using namespace System::IO;
 
@@ -199,7 +201,7 @@ class Usuario{
 
 	void criarQuiz (String^ pergunta, bool resposta, String^ nomeDisciplina, String^ nomeTopico){
 		if (this.perfil == admin){
-			Quiz.criar(pergunta, resposta, nomeDisciplina, nomeTopico);
+			GerQuiz.criar(pergunta, resposta, nomeDisciplina, nomeTopico);
 		}
 			
 		return;
@@ -207,7 +209,7 @@ class Usuario{
 
 	void alterarQuiz (String^ pergunta, bool resposta, String^ nomeDisciplina, String^ nomeTopico){
 		if (this.perfil == admin){
-			Quiz.alterar(pergunta, resposta, nomeDisciplina, nomeTopico);
+			GerQuiz.alterar(pergunta, resposta, nomeDisciplina, nomeTopico);
 		}
 			
 		return;
@@ -215,7 +217,7 @@ class Usuario{
 
 	void deletarQuiz (String^ pergunta){
 		if (this.perfil == admin){
-			Quiz.deletar(pergunta);
+			GerQuiz.deletar(pergunta);
 		}
 			
 		return;
