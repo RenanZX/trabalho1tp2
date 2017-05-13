@@ -5,41 +5,40 @@
 #include <direct.h>
 #include <stdexcept>
 #include <windows.h>
-#include "Interfaces.h"
-#include "Quiz.h"
 #include <iostream>
-#include "Builders.h"
+#include "dirent.h"
+
+/*verifica qual a versao do SO*/
+#ifdef _WIN32
+#define CLEAR "cls"
+#elif LINUX
+#define CLEAR "clear"
+#endif
 
 using namespace std;
 
-class GerQuiz:public IGQuiz /*gerenciador de quiz*/
+class GerQuiz /*gerenciador de quiz*/
 {
 private:
-    void PegaAttr(string dado);
-    void AddPerguntas();
-    void ReorganizarPerArq(string editind,string novap);
-    string FormularPergArq(string n1,string n2,string n3);
-    void EditPer();
-    void DelPer();
-    string BuscPer(string ind);
-    string dat1,dat2,dat3;
-    string arquivo,dir;
-    static const int ADICIONARP;
-    static const int DELELETARP;
-    static const int EDITARP;
-    static const int SAIR;
-    static const int LOGQUIZ;
-    static const int DELQUIZ;
-    static const int EDITQUIZ;
-    bool carregaQuiz();
-    void EditarQuiz();
-    void ApagarQuiz();
+    void PegaAttributo(string dado);/*captura atributos de dados lidos do arquivo com quiz*/
+    void ReorganizarPerguntaArquivo(string editind,string novap);/*reorganiza o arquivo quiz com as perguntas*/
+    string FormularPerguntaArquivo(string form1,string form2,string form3); /*formula as perguntas no arquivo*/
+    string BuscarPergunta(string ind);/*busca a pergunta no arquivo atravez de um indice*/
+    string data1,data2,data3;/*data1=index de uma pergunta data2=pergunta data3=resposta*/
+    string arquivo,diretorio;/*nome do arquivo e nome do diretorio*/
 public:
     GerQuiz(); /*construtor*/
     ~GerQuiz();
-    void executar(); /*interface com o usuario*/
-    Quiz* getQuiz();
-    void getQuiz(Quiz* q);
+    void CriarQuiz() throw(invalid_argument);/*metodo que cria o arquivo contendo o quiz*/
+    bool carregaQuiz();/*metodo que carrega o arquivo contendo o quiz*/
+    void CarregaQuizEditar()throw(invalid_argument);/*metodo que tenta carregar o quiz previamente setado*/
+    void SelecionarArquivo()throw(invalid_argument);/*seleciona o arquivo contendo o quiz*/
+    void ApagarQuiz()throw(invalid_argument); /*apaga o arquivo contendo o quiz*/
+    void AdicionarPerguntas()throw(invalid_argument); /*adiciona perguntas ao quiz setado em questão*/
+    void EditarPergunta()throw(invalid_argument);/*editor de perguntas no arquivo do quiz*/
+    void DeletarPergunta()throw(invalid_argument);/*deleta perguntas do arquivo com quiz*/
+    string getQuizFileName();/*retorna o destino juntamente ao nome do ultimo arquivo setado*/
+    string getFolderFilesName(); /*retorna a pasta contendo os quizes*/
 };
 
 #endif // GERCARQUIZ_H
