@@ -3,6 +3,7 @@
 
 #include "Interfaces.h"
 #include "GerenciadorQuiz.h"
+#include "Quiz.h"
 
 class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que irão interagir com o usuario*/
 {
@@ -25,6 +26,11 @@ public:
 //falta implementar
 class InterfaceUserQuiz:public InterfaceUsuarioQuiz
 {
+private:
+    static const int COMECARQUIZ;
+    static const int CARREGAP;
+    static const int SELP;
+    static const int SAIR;
 public:
     void executar()throw(runtime_error);
 };
