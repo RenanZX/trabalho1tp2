@@ -10,6 +10,10 @@ const int InterfaceUserGerQuiz::EDITQUIZ = 4;
 const int InterfaceUserGerQuiz::SELQUIZ = 3;
 const int InterfaceUserGerQuiz::DELQUIZ = 5;
 const int InterfaceUserGerQuiz::SAIR = 6;
+const int InterfaceUserQuiz::COMECARQUIZ = 1;
+const int InterfaceUserQuiz::CARREGAP = 2;
+const int InterfaceUserQuiz::SELP = 3;
+const int InterfaceUserQuiz::SAIR = 4;
 
 void InterfaceUserGerQuiz::EditarQuiz()throw(runtime_error)
 {
@@ -31,13 +35,13 @@ void InterfaceUserGerQuiz::EditarQuiz()throw(runtime_error)
             switch(opt)
             {
                case ADICIONARP:
-                    g->AddPerguntas();
+                    g->AdicionarPerguntas();
                     break;
                case EDITARP:
-                    g->EditPer();
+                    g->EditarPergunta();
                     break;
                case DELELETARP:
-                    g->DelPer();
+                    g->DeletarPergunta();
                     break;
                 case SAIRP:
                     fecha = true;
@@ -47,7 +51,7 @@ void InterfaceUserGerQuiz::EditarQuiz()throw(runtime_error)
             }
         }catch(invalid_argument &e){
             system(CLEAR);
-            cout << e.what() << endl;
+            cout << e.what() << endl;/*manda um feedback se algo der errado*/
             system("pause");
         }
     }
@@ -80,10 +84,10 @@ void InterfaceUserGerQuiz::executar()throw(runtime_error)
                     g->CriarQuiz();
                     break;
                 case LOGQUIZ:
-                    g->CarregaQuizEd();
+                    g->CarregaQuizEditar();
                     break;
                 case SELQUIZ:
-                    g->SelecionarArq();
+                    g->SelecionarArquivo();
                     break;
                 case EDITQUIZ:
                     EditarQuiz();
@@ -98,6 +102,48 @@ void InterfaceUserGerQuiz::executar()throw(runtime_error)
                 default:
                     break;
                 }
+        }catch(invalid_argument &e){
+            system(CLEAR);
+            cout << e.what() << endl;/*manda um feedback se algo der errado*/
+            system("pause");
+        }
+    }
+}
+
+void InterfaceUserQuiz::executar()throw(runtime_error)
+{
+    bool fecha = false;
+    int opt;
+    Quiz *q = new Quiz();
+
+    while(!fecha){
+        try{
+            system(CLEAR);/*interage com o usuario*/
+            cout << "Quiz" << endl;
+            cout << COMECARQUIZ << ". Comecar Quiz" << endl;
+            cout << CARREGAP << ". Carregar Perguntas" << endl;
+            cout << SELP << ". Selecionar Perguntas" << endl;
+            cout << SAIR << ". Sair" << endl;
+            cout << "Escolha uma opcao" << endl;
+            cin >> opt;/*recebe a opcao do usuario*/
+
+            switch(opt){/*chama um metodo dependendo da opcao recebida*/
+                case COMECARQUIZ:
+                    q->ComecarQuiz();/*comeca o quiz do usuario*/
+                    break;
+                case CARREGAP:
+                    q->CarregarQuiz();/*carrega o quiz para o usuario*/
+                    break;
+                case SELP:
+                    q->SelecionarPergunta();/*seletor de perguntas*/
+                    break;
+                case SAIR:
+                    fecha = true;
+                    free(q);
+                    break;
+                default:
+                    break;
+            }
         }catch(invalid_argument &e){
             system(CLEAR);
             cout << e.what() << endl;
