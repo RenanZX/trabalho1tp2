@@ -3,10 +3,12 @@
 
 #include <string>
 #include <stdexcept>
+#include <stdlib.h>
+
 
 using namespace std;
 
-class Diciplina {
+class Diciplinas {
 
 private:
 	string nome;
@@ -18,7 +20,7 @@ private:
 	void validarCodigo (string) throw (invalid_argument);
 
 public:
-	Diciplina();
+	Diciplinas();
 	void setNome(string)throw (invalid_argument);
 	string getNome();
 	void setCodigo(string)throw (invalid_argument);
@@ -42,13 +44,16 @@ class GerenciaDiciplinas{
 private:
 	int opcao;
 	FILE * arquivo_diciplina;
+	FILE * lista_diciplinas;
+	string nome_arquivo;
 	const static int CONTINUAR;
 	const static int SAIR;
+
 public:
 	GerenciaDiciplina();
 	/*~GerenciaDiciplina(); */
-	void criaDiciplina();
-
+	void criarDiciplina();
+    void removerDiciplina();
 
 };
 
