@@ -54,11 +54,9 @@ void GerenciaDiciplinas::criarDiciplina (){
 	string codigo_a_adicionar;
 	opcao = CONTINUAR;
 
+
     lista_diciplinas = fopen("lista_diciplinas.txt", "a");
 
-    if (lista_diciplinas == NULL) {
-
-    }
 
 	while(opcao != SAIR) {
 		cout << "Insira o nome da Diciplinas a ser adicionada." << endl;
@@ -78,9 +76,9 @@ void GerenciaDiciplinas::criarDiciplina (){
 				arquivo_diciplina = fopen(nome_arquivo.c_str(), "w");
 				cout << "A diciplina foi criada." << endl;
 				fprintf(arquivo_diciplina, "%s | %s", codigo_a_adicionar.c_str(),diciplina_a_adicionar.c_str());
-				fprintf(lista_diciplinas, "%s|%s", codigo_a_adicionar.c_str(),diciplina_a_adicionar.c_str());
+				fprintf(lista_diciplinas, "%s | %s\n" , codigo_a_adicionar.c_str(),diciplina_a_adicionar.c_str());
 				fclose(arquivo_diciplina);
-				fclose(lista_diciplinas);
+
 			}
 			catch (invalid_argument excecao) {
 				cout << excecao.what() << endl;
@@ -90,6 +88,7 @@ void GerenciaDiciplinas::criarDiciplina (){
 		cout << "Aperte 1 para continuar ou 0 para sair." << endl;
 		cin >> opcao;
 	}
+	fclose(lista_diciplinas);
 
 }
 void GerenciaDiciplinas::removerDiciplina() {

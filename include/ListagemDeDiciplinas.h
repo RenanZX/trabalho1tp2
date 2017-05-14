@@ -20,7 +20,7 @@ private:
 public:
     ListagemDeDiciplinas();
     void listarDiciplinas();
-    void listarTopicos();
+
 };
 
 #endif // LISTAGEMDEDICIPLINAS_H_INCLUDED

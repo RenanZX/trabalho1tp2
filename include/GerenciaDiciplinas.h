@@ -29,16 +29,6 @@ public:
 
 };
 
-/*class Topico {
-
-private:
-	string nome;
-public:
-	topico();
-	setNome();
-	getNome();
-
-}; */
 
 class GerenciaDiciplinas{
 private:
