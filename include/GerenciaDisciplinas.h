@@ -1,14 +1,14 @@
-#ifndef GERENCIADICIPLINAS_H_INCLUDED
-#define GERENCIADICIPLINAS_H_INCLUDED
+#ifndef GERENCIADISCIPLINAS_H_INCLUDED
+#define GERENCIADISCIPLINAS_H_INCLUDED
 
-#include <string>
+#include <string.h>
 #include <stdexcept>
 #include <stdlib.h>
 
 
 using namespace std;
 
-class Diciplinas {
+class Disciplina {
 
 private:
 	string nome;
@@ -20,7 +20,7 @@ private:
 	void validarCodigo (string) throw (invalid_argument);
 
 public:
-	Diciplinas();
+	Disciplina();
 	void setNome(string)throw (invalid_argument);
 	string getNome();
 	void setCodigo(string)throw (invalid_argument);
@@ -30,20 +30,20 @@ public:
 };
 
 
-class GerenciaDiciplinas{
+class GerenciaDisciplinas{
 private:
 	int opcao;
-	FILE * arquivo_diciplina;
-	FILE * lista_diciplinas;
+	FILE * arquivo_disciplina;
+	FILE * lista_disciplinas;
 	string nome_arquivo;
 	const static int CONTINUAR;
 	const static int SAIR;
 
 public:
-	GerenciaDiciplina();
-	/*~GerenciaDiciplina(); */
-	void criarDiciplina();
-    void removerDiciplina();
+	GerenciaDisciplinas();
+	/*~GerenciaDisciplina(); */
+	void criarDisciplina();
+    void removerDisciplina();
 
 };
 

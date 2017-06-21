@@ -2,17 +2,17 @@
 #define GERCARQUIZ_H
 #include <stdio.h>  /*bibliotecas*/
 #include <stdlib.h>
-#include <direct.h>
 #include <stdexcept>
-#include <windows.h>
 #include <iostream>
 #include "dirent.h"
 
 /*verifica qual a versao do SO*/
-#ifdef _WIN32
-#define CLEAR "cls"
-#elif LINUX
-#define CLEAR "clear"
+#ifdef __WIN32__
+    #define CLEAR "cls"
+    #include <direct.h>
+    #include <windows.h>
+#elif __linux__
+    #define CLEAR "clear"
 #endif
 
 using namespace std;

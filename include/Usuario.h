@@ -1,43 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include "GerenciaDisciplinas.h"
+#include "GerenciadorQuiz.h"
+
 class Usuario{
-	private String^ nome;
-	private String^ login;
-	private String^ senha;
-	private enum PERFIL {admin, estudante} perfil;
-	private bool logado;
+	private:
+		string nome;
+		string login;
+		string senha;
+		enum PERFIL {admin, estudante} perfil;
+		bool logado;
 
-	private typedef struct listaDisciplinas;
+		typedef struct listaDisciplinas;
 
-	public String getNome();
-	public void setNome(String^);
-	public String^ getLogin();
-	public void setLogin(String^);
-	public String^ getSenha();
-	public void setSenha(String^);
-	public int getPerfil();
-	public void setPerfil(char);
+	public:
+		string getNome();
+		void setNome(string);
+		string getLogin();
+		void setLogin(string);
+		string getSenha();
+		void setSenha(string);
+		int getPerfil();
+		void setPerfil(char);
 
-	public void Usuario();
-
-
-	public String^ listarDisciplinas();
-
-	public void adicionarDisciplina(int);
-
-	public bool Login(String^, String^);
-
-	public void Cadastrar(String^, String^, String^, int, Disciplinas*);
+		Usuario();
 
 
-	public void criarDisciplina (String^);
+		string listarDisciplinas();
 
-	public void alterarDisciplina (String^, listaTopicos*, listaQuizzes*);
+		void adicionarDisciplina(int);
 
-	public void deletarDisciplina (String^);
+		bool Login(string, string);
+
+		void Cadastrar(string, string, string, int, listaDisciplinas*);
 
 
-	public void criarQuiz (String^, bool, String^, String^);
+		void criarDisciplina (string, GerenciaDisciplinas);
 
-	public void alterarQuiz (String^, bool, String^, String^);
+		void alterarDisciplina (string);//, listaTopicos*, listaQuizzes*);
+
+		void deletarDisciplina (string, GerenciaDisciplinas);
+
+
+		void criarQuiz (string, bool, string, string, GerQuiz);
+
+		void alterarQuiz (string, bool, string, string, GerQuiz);
 	
-	public void deletarQuiz (String^);
-}
+		void deletarQuiz (string, GerQuiz);
+};
