@@ -4,8 +4,14 @@
 #include "Interfaces.h"
 #include "GerenciadorQuiz.h"
 #include "Quiz.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sstream>
+#include <stdexcept>
 
-class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que ir√£o interagir com o usuario*/
+using namespace std;
+
+class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que ir„o interagir com o usuario*/
 {
 private:
     static const int ADICIONARP;/*constantes*/
@@ -18,8 +24,18 @@ private:
     static const int DELQUIZ;
     static const int EDITQUIZ;
     static const int CREATEQUIZ;
-    GerQuiz *g;
+    static const string TABLETOPICS;
+    static const string TABLEDISC;
+    GerQuiz *gerente;
     void EditarQuiz()throw(runtime_error);
+    string index;
+    void setTableTopics(string topico);
+    void setTableDisc(string disciplina);
+    void findTableTopics(string topico)throw(invalid_argument);
+    void findTableDisc(string disciplina)throw(invalid_argument);
+    string AddTopDisc()throw(runtime_error);
+    string EditarTopDisc()throw(runtime_error);
+    string ExcluirTopDisc()throw(runtime_error);
 public:
     void executar()throw(runtime_error);
 };
@@ -34,5 +50,4 @@ private:
 public:
     void executar()throw(runtime_error);
 };
-
 #endif // CONTROLEINTERFACEUSUARIO_H

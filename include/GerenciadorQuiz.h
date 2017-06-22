@@ -8,11 +8,11 @@
 
 /*verifica qual a versao do SO*/
 #ifdef __WIN32__
-    #define CLEAR "cls"
-    #include <direct.h>
-    #include <windows.h>
+#include <windows.h>
+#include <direct.h>
+#define CLEAR "cls"
 #elif __linux__
-    #define CLEAR "clear"
+#define CLEAR "clear"
 #endif
 
 using namespace std;
@@ -26,9 +26,11 @@ private:
     string BuscarPergunta(string ind);/*busca a pergunta no arquivo atravez de um indice*/
     string data1,data2,data3;/*data1=index de uma pergunta data2=pergunta data3=resposta*/
     string arquivo,diretorio;/*nome do arquivo e nome do diretorio*/
+    string indice; /*indice referente aos topicos e disciplinas relacionados*/
 public:
     GerQuiz(); /*construtor*/
     ~GerQuiz();
+    void SetIndexTopicDisc(string index);
     void CriarQuiz() throw(invalid_argument);/*metodo que cria o arquivo contendo o quiz*/
     bool carregaQuiz();/*metodo que carrega o arquivo contendo o quiz*/
     void CarregaQuizEditar()throw(invalid_argument);/*metodo que tenta carregar o quiz previamente setado*/
@@ -39,6 +41,7 @@ public:
     void DeletarPergunta()throw(invalid_argument);/*deleta perguntas do arquivo com quiz*/
     string getQuizFileName();/*retorna o destino juntamente ao nome do ultimo arquivo setado*/
     string getFolderFilesName(); /*retorna a pasta contendo os quizes*/
+    string getQuizesFilesName(); /*retorna uma lista com todos os nomes dos quizes dentro de uma pasta*/
 };
 
 #endif // GERCARQUIZ_H
