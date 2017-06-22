@@ -7,10 +7,10 @@ const int Quiz::SAIR = 3;
 void Pergunta::SetPergunta(string ind,string per,string res)throw(invalid_argument)
 {
     string error = "Dados setados invalidos";/*verifica a veracidade dos dados e manda uma excessao*/
-    if(atof(ind.c_str())==0) throw invalid_argument(error);
+    if((atof(ind.c_str())==0)&&(ind=="")&&(per=="")&&(res=="")) throw invalid_argument(error);
     index = ind;
-    p = per;
-    r = res;
+    strpergunta = per;
+    strresposta = res;
 }
 
 string Pergunta::getIndex()
@@ -20,15 +20,15 @@ string Pergunta::getIndex()
 
 string Pergunta::getPergunta()
 {
-    return p;
+    return strpergunta;
 }
 
 string Pergunta::getResposta()
 {
-    return r;
+    return strresposta;
 }
 
-bool Pergunta::Comparar(Pergunta p)
+bool Pergunta::Comparar(Pergunta p)/*compara duas perguntas e retorna verdadeiro ou falso,depedendo se sao iguais ou nao*/
 {
     if((p.getIndex()==this->getIndex())&&(p.getPergunta()==this->getPergunta())&&(p.getResposta()==this->getResposta())){
         return true;
@@ -36,53 +36,61 @@ bool Pergunta::Comparar(Pergunta p)
     return false;
 }
 
-ELEMENTO::~ELEMENTO()
+bool Pergunta::CompararResposta(string resposta)
 {
-    delete p;
+    if(resposta.compare(this->strresposta)){
+        return true;
+    }
+    return false;
 }
 
-void listaPergunta::SetInicio(Pergunta* p)
+ELEMENTO::~ELEMENTO()
 {
-    ELEMENTO *ptr = new ELEMENTO();
+
+}
+
+void listaPergunta::SetInicio(Pergunta* p)/*insere no inicio da lista*/
+{
+    ELEMENTO *ptr = new ELEMENTO();/*novo espaco e alocado*/
     ptr->p = p;
     ptr->prox = primeiro;
     primeiro->ant = ptr;
-    primeiro = ptr;
-    if(ultimo==NULL){
-        ultimo = ptr;
+    primeiro = ptr;/*ponteiro novo passa a ser o primeiro elemento da lista*/
+    if(ultimo==NULL){/*se o ultimo for nulo*/
+        ultimo = ptr;/*ultimo recebe o primeiro elemento*/
     }
 }
 
 Pergunta* listaPergunta::getInicio()
 {
-    ELEMENTO *excluido = primeiro;
-    Pergunta *p = excluido->p;
-    primeiro = excluido->prox;
-    delete excluido;
-    return p;
+    ELEMENTO *excluido = primeiro;/*pega um ponteiro do elemento excluido*/
+    Pergunta *p = excluido->p;/*p e a pergunta que sera retornada da funcao*/
+    primeiro = excluido->prox;/*proximo elemento agora e o primeiro*/
+    delete excluido;/*deleta o ponteiro*/
+    return p;/*retorna a pergunta*/
 }
 
 void listaPergunta::SetFinal(Pergunta* p)
 {
-    ELEMENTO *novoel = new ELEMENTO();
-    novoel->p = p;
+    ELEMENTO *novoelemento = new ELEMENTO();
+    novoelemento->p = p;
     if(!EstaVazia()){
-        ultimo->prox = novoel;
-        novoel->ant = ultimo;
-        ultimo = novoel;
+        ultimo->prox = novoelemento;
+        novoelemento->ant = ultimo;
+        ultimo = novoelemento;
     }else{
-        primeiro = novoel;
-        ultimo = novoel;
+        primeiro = novoelemento;
+        ultimo = novoelemento;
     }
 }
 
 Pergunta* listaPergunta::getFinal()
 {
-    ELEMENTO *exc = ultimo;
-    Pergunta *ret = exc->p;
-    ultimo = exc->ant;
-    delete exc;
-    return ret;
+    ELEMENTO *excluido = ultimo;
+    Pergunta *retorne = excluido->p;
+    ultimo = excluido->ant;
+    delete excluido;
+    return retorne;
 }
 
 bool listaPergunta::EstaVazia()/*verifica se a lista esta vazia ou nao*/
@@ -97,10 +105,13 @@ listaPergunta::~listaPergunta()/*destroi a lista*/
 {
     ELEMENTO* ptr = primeiro;
     ELEMENTO* excluido;
+    Pergunta* excluida;
 
     while(ptr!=NULL){
         excluido = ptr;
         ptr = ptr->prox;
+        excluida = excluido->p;
+        delete excluida;
         delete excluido;
     }
 }
@@ -129,7 +140,9 @@ bool listaPergunta::deletarElemento(string ind)/*deleta um elemento da lista*/
     while((ptr!=NULL)&&(!achou)){
         if(ptr->p->getIndex()!=ind){
             ELEMENTO* exc = ptr;
+            Pergunta* p = exc->p;
             ptr = exc->prox;
+            delete p;
             delete exc;
             achou = true;
         }
@@ -155,11 +168,11 @@ void Quiz::OrganizarLista(string inds)/*organiza a lista com quiz apartir de uma
     listaPergunta *aux = new listaPergunta();/*cria uma lista nova*/
     int i = 0;
     int j = 0;
-    int total = inds.length()-1;
+    int total = inds.length();
     string* index = new string[total];
     Pergunta *p;
 
-    while(j!=total){
+    while(j!=total-1){
         j = inds.find("|");
         index[i] = inds.substr(0,j);
         inds = inds.substr(j,total);
@@ -173,7 +186,6 @@ void Quiz::OrganizarLista(string inds)/*organiza a lista com quiz apartir de uma
          }
          i++;
     }
-    free(l);
     l = aux;
 }
 
@@ -200,49 +212,54 @@ void Quiz::ComecarQuiz()throw(invalid_argument)
         if(l->EstaVazia()){/*se a lista estiver vazia faz a leitura do arquivo do quiz*/
             lerQuiz();
         }
-        Pergunta* p;
+        Pergunta *p;
         system(CLEAR);
         while((!l->EstaVazia())&&(!saiu)){/*testa se o user saiu ou se a lista de perguntas ainda existem perguntas*/
             system(CLEAR);
             p = l->getInicio();
-            cout << p->getIndex() << ". "<< p->getPergunta() << endl;
+            cout << p->getIndex() << ". "<< p->getPergunta() << endl;/*opcoes do usuario*/
             cout << "\nOque deseja fazer?" << endl;
             cout << RESPONDER << ". Responder" << endl;
             cout << PULAR << ". Pular Questao" << endl;
             cout << SAIR << ". Sair do Quiz" << endl;
             cout << "Digite uma opcao" << endl;
             cin >> opcoes;
-            getchar();
+            cin.ignore(1000,'\n');
 
             switch(opcoes)/*opcoes do usuario*/
             {
                 case RESPONDER:
                     cout << "Digite sua resposta:" << endl;
                     getline(cin,resposta,'\n');
-                    if(resposta==p->getResposta()){/*compara as respostas e incrementa os acertos e os erros*/
+                    if(resposta == p->getResposta()){/*compara as respostas e incrementa os acertos e os erros*/
                         acertos++;
                     }else{
                         erros++;
                     }
                     break;
+                    free(p);
                 case PULAR:
                     l->SetFinal(p);
                     break;
                 case SAIR:
+                    free(p);
                     saiu = true;
+                    break;
+                default:
                     break;
             }
         }
         if(!saiu){
-            cout << "Voce acertou " << acertos << "perguntas" << endl;
-            cout << "Voce errou" << erros << "perguntas" << endl;
+            cout << "Voce acertou " << acertos << " perguntas" << endl;/*mostra a pontuacao do usuario*/
+            cout << "Voce errou " << erros << " perguntas" << endl;
             if(acertos > erros){
-                cout << "Parabéns!Sua pontuacao foi excelente" << endl;
+                cout << "Parabens!Sua pontuacao foi excelente" << endl;/*feedback para o usuario*/
             }else if(acertos < erros){
                 cout << "Que pena,sua pontuacao foi terrivel mas voce pode tentar mais vezes" << endl;
             }else{
                 cout << "Quase!voce quase conseguiu uma boa pontuacao" << endl;
             }
+            system("pause");
         }
         delete l;
     }catch(invalid_argument){
@@ -257,7 +274,7 @@ void Quiz::CarregarQuiz()throw(invalid_argument)
     try{
         lerQuiz();
         npergs = l->ShowLista();/*mostra os elementos da lista para o usuario*/
-        cout << "Existem no Total" << npergs << "Perguntas" << endl;/*total de perguntas*/
+        cout << "Existem no Total " << npergs << " Perguntas" << endl;/*total de perguntas*/
         system("pause");
     }catch(invalid_argument &e){
         throw invalid_argument(e.what());
@@ -294,6 +311,8 @@ void Quiz::SelecionarPergunta()throw(invalid_argument)
             }
         }
         OrganizarLista(ind);
+        cout << "Perguntas Selecionadas com Sucesso!" << endl;
+        system("pause");
     }else{
         throw invalid_argument("nao existem perguntas a serem selecionadas.");
     }
@@ -329,7 +348,7 @@ void Quiz::lerQuiz()throw(invalid_argument)/*carregador de quiz*/
                 pos = entrada.find("|")+1;
                 entrada = entrada.substr(pos,entrada.length());/*res recebe o terceiro dado lido da string de entrada*/
                 res = entrada.substr(0,entrada.find("|"));
-                SetPergunta(ind,per,res);/*seta a pergunta lida no quiz*/
+                SetPergunta(ind,per,res);
             }
         }catch(invalid_argument &e){
             throw invalid_argument("Erro Fatal!Dados lidos com problemas");
