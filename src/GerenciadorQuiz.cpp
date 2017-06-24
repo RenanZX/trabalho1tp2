@@ -59,14 +59,12 @@ void GerQuiz::CriarQuiz()throw(invalid_argument)/*cria um novo arquivo com quiz*
         cout << "Digite o nome do Quiz que deseja criar:" << endl;
         getline(cin,nomfile,'\n');/*faz a leitura do nome do arquivo*/
         f = fopen((diretorio+"/"+nomfile).c_str(),"rt");/*verifica se o arquivo existe*/
-        f = fopen((diretorio+"/"+nomfile+".txt").c_str(),"rt");/*verifica se o arquivo existe*/
         if(f!=NULL){
             fclose(f);
             throw invalid_argument("Erro Quiz ja existente");/*caso exista lança uma excessao*/
         }
         fclose(f);
         f = fopen((diretorio+"/"+nomfile).c_str(),"wt");/*caso contrario sera gravado um novo arquivo*/
-        f = fopen((diretorio+"/"+nomfile+".txt").c_str(),"wt");/*caso contrario sera gravado um novo arquivo*/
         cout << "Deseja criar mais quizes?(S/N)" << endl;/*pergunta ao usuario se ele quer criar mais quizes*/
         cin >> confirma;/*recebe a confirmacao*/
         cin.ignore(1000,'\n');
@@ -190,8 +188,8 @@ void GerQuiz::ReorganizarPerguntaArquivo(string editind,string novap)/*reorganiz
 /*funçoes providas da interface com o usuario pelo gerenciador*/
 void GerQuiz::EditarPergunta()throw(invalid_argument)/*edita a pergunta no arquivo*/
 {
-    string data;
-    string ind,pergunta,resposta;
+    string data,ind;
+    string pergunta;
     bool carregou;
     int i = 0;
     system(CLEAR);
@@ -225,12 +223,6 @@ void GerQuiz::EditarPergunta()throw(invalid_argument)/*edita a pergunta no arqui
                 i++;
             }
             ReorganizarPerguntaArquivo(indice+ind,pergunta);
-            getline(cin,pergunta,'\n');
-            cout << "Digite sua nova resposta:" << endl;
-            getline(cin,resposta,'\n');
-
-            pergunta = FormularPerguntaArquivo(ind,pergunta,resposta);/*caso contrario recebera os dados do usuario e ao formular a nova pergunta ira reorganizar o arquivo de perguntas*/
-            ReorganizarPerguntaArquivo(ind,pergunta);
         }
     }
 }
@@ -257,7 +249,7 @@ void GerQuiz::DeletarPergunta()throw(invalid_argument)/*deleta a pergunta do arq
     system("pause");
 }
 
-string GerQuiz::FormularPerguntaImprimir(string pergunta) /*recebe uma pergunta com o formato do arquivo e formula para ser imprimida para o usuario*/
+string GerQuiz::FormularPerguntaImprimir(string pergunta)
 {
     string index,dadopergunta,nota;
     std::stringstream retorno;
@@ -374,7 +366,6 @@ void GerQuiz::SelecionarArquivo()throw(invalid_argument)    /*metodo selecionar 
             counter++;
         }
         arquivo = diretorio+"/"+saida;/*encontrando o nome do arquivo e setado juntamente com o diretorio onde ele sera armazenado*/
-        arquivo = diretorio+"/"+saida+".txt";/*encontrando o nome do arquivo e setado juntamente com o diretorio onde ele sera armazenado*/
         cout << "Quiz selecionado com sucesso!" << endl;/*caso de sucesso imprime para o usuario*/
         system("pause");
     }else{
@@ -429,10 +420,10 @@ void GerQuiz::ApagarQuiz()throw(invalid_argument)/*apaga um arquivo contendo um 
     }
 }
 
-void GerQuiz::SetIndexTopicDisc(string index) /*seta o topico e a disciplina do quiz*/
+void GerQuiz::SetIndexTopicDisc(string index)
 {
-    indice = index+"."; /*seta o indice correspondente a tebela de topicos e disciplinas*/
-    FILE *f = fopen(tabelarelationquiz.c_str(),"r+"); /*abre a tabela de relacao entre disciplinas topicos e quizes*/
+    indice = index+".";
+    FILE *f = fopen(tabelarelationquiz.c_str(),"r+");
     char linha[1000];
     int nrolinhas = 0;
     bool escreva = true;
@@ -440,12 +431,12 @@ void GerQuiz::SetIndexTopicDisc(string index) /*seta o topico e a disciplina do 
     string verificar,arquivonome,verificarind;
     arquivonome = arquivo.substr(arquivo.find("/")+1,arquivo.length());
 
-    if(f==NULL){ /*caso a tabela nao exista ela e criada*/
+    if(f==NULL){
         fclose(f);
         f = fopen(tabelarelationquiz.c_str(),"w+");
     }
 
-    while((fgets(linha,sizeof(linha),f))&&(escreva)){ /*procura na tabela se o quiz e o indice referentes as tabelas de disciplinas e topicos ja nao foram tabelados*/
+    while((fgets(linha,sizeof(linha),f))&&(escreva)){
         verificar = linha;
         verificarind = verificar.substr(0,verificar.find("."));
         verificar = verificar.substr(verificar.find("|")+1,verificar.length());
@@ -455,7 +446,7 @@ void GerQuiz::SetIndexTopicDisc(string index) /*seta o topico e a disciplina do 
          }
          nrolinhas++;
     }
-    if(escreva){ /*escreve na tabela,caso a relacao de topicos e disciplinas seja diferente,mesmo que o quiz seja igual*/
+    if(escreva){
         nroquiz << nrolinhas;
         fputs((index+"."+nroquiz.str()+"|"+arquivonome+"|\n").c_str(),f);
         nroquiz.str("");

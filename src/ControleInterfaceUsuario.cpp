@@ -14,8 +14,6 @@ const int InterfaceUserQuiz::COMECARQUIZ = 1;
 const int InterfaceUserQuiz::CARREGAP = 2;
 const string InterfaceUserGerQuiz::TABLETOPICS = "tabletop";
 const string InterfaceUserGerQuiz::TABLEDISC = "tabledisc";
-const string InterfaceUserGerQuiz::TABLETOPICS = "tabletop.txt";
-const string InterfaceUserGerQuiz::TABLEDISC = "tabledisc.txt";
 const int InterfaceUserQuiz::SELP = 3;
 const int InterfaceUserQuiz::SAIR = 4;
 
@@ -43,9 +41,7 @@ void InterfaceUserGerQuiz::setTableTopics(string topico)
         fclose(f);
         f = fopen(TABLETOPICS.c_str(),"w");
     }
-
     ss << index << "-" << i;
-    ss << index << i;
     index = ss.str();
     if(!existe){
         ss.str("");
@@ -121,7 +117,6 @@ void InterfaceUserGerQuiz::findTableTopics(string topico)throw(invalid_argument)
     while((fgets(linha,sizeof(linha),f))&&(!achou)){
         comparar = linha;
         comparar = comparar.substr(comparar.find("|")+1,comparar.length());
-        comparar = comparar.substr(comparar.find("|"),comparar.length());
         comparar = comparar.substr(0,comparar.find("\n"));
         if(comparar == topico){
             achou = true;
@@ -150,7 +145,6 @@ void InterfaceUserGerQuiz::findTableDisc(string disciplina)throw(invalid_argumen
     while((fgets(linha,sizeof(linha),f))&&(!achou)){
         comparar = linha;
         comparar = comparar.substr(comparar.find("|")+1,comparar.length());
-        comparar = comparar.substr(comparar.find("|"),comparar.length());
         comparar = comparar.substr(0,comparar.find("\n"));
         if(comparar == disciplina){
             achou = true;
@@ -210,22 +204,12 @@ string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
         getline(cin,disciplina,'\n');
         findTableDisc(disciplina);
         showTableTopics();
-string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
-{
-    index = "";
-    string disciplina,topico;
-
-    try{
-        cout << "Digite a disciplina na qual deseja editar a pergunta:" << endl;
-        getline(cin,disciplina,'\n');
-        findTableDisc(disciplina);
         cout << "Digite o topico no qual deseja editar a pergunta:" << endl;
         getline(cin,topico,'\n');
         findTableTopics(topico);
     }catch(invalid_argument &e){
         erro = e.what();
         throw runtime_error(erro);
-        throw runtime_error(e.what());
     }
     return index;
 }
@@ -241,9 +225,6 @@ string InterfaceUserGerQuiz::ExcluirTopDisc()throw(runtime_error)
         getline(cin,disciplina,'\n');
         findTableDisc(disciplina);
         showTableTopics();
-        cout << "Digite a disciplina na qual deseja deletar a pergunta:" << endl;
-        getline(cin,disciplina,'\n');
-        findTableDisc(disciplina);
         cout << "Digite o topico no qual deseja deletar a pergunta:" << endl;
         getline(cin,topico,'\n');
         findTableTopics(topico);
