@@ -257,7 +257,7 @@ void GerQuiz::DeletarPergunta()throw(invalid_argument)/*deleta a pergunta do arq
     system("pause");
 }
 
-string GerQuiz::FormularPerguntaImprimir(string pergunta)
+string GerQuiz::FormularPerguntaImprimir(string pergunta) /*recebe uma pergunta com o formato do arquivo e formula para ser imprimida para o usuario*/
 {
     string index,dadopergunta,nota;
     std::stringstream retorno;
@@ -429,10 +429,10 @@ void GerQuiz::ApagarQuiz()throw(invalid_argument)/*apaga um arquivo contendo um 
     }
 }
 
-void GerQuiz::SetIndexTopicDisc(string index)
+void GerQuiz::SetIndexTopicDisc(string index) /*seta o topico e a disciplina do quiz*/
 {
-    indice = index+".";
-    FILE *f = fopen(tabelarelationquiz.c_str(),"r+");
+    indice = index+"."; /*seta o indice correspondente a tebela de topicos e disciplinas*/
+    FILE *f = fopen(tabelarelationquiz.c_str(),"r+"); /*abre a tabela de relacao entre disciplinas topicos e quizes*/
     char linha[1000];
     int nrolinhas = 0;
     bool escreva = true;
@@ -440,12 +440,12 @@ void GerQuiz::SetIndexTopicDisc(string index)
     string verificar,arquivonome,verificarind;
     arquivonome = arquivo.substr(arquivo.find("/")+1,arquivo.length());
 
-    if(f==NULL){
+    if(f==NULL){ /*caso a tabela nao exista ela e criada*/
         fclose(f);
         f = fopen(tabelarelationquiz.c_str(),"w+");
     }
 
-    while((fgets(linha,sizeof(linha),f))&&(escreva)){
+    while((fgets(linha,sizeof(linha),f))&&(escreva)){ /*procura na tabela se o quiz e o indice referentes as tabelas de disciplinas e topicos ja nao foram tabelados*/
         verificar = linha;
         verificarind = verificar.substr(0,verificar.find("."));
         verificar = verificar.substr(verificar.find("|")+1,verificar.length());
@@ -455,7 +455,7 @@ void GerQuiz::SetIndexTopicDisc(string index)
          }
          nrolinhas++;
     }
-    if(escreva){
+    if(escreva){ /*escreve na tabela,caso a relacao de topicos e disciplinas seja diferente,mesmo que o quiz seja igual*/
         nroquiz << nrolinhas;
         fputs((index+"."+nroquiz.str()+"|"+arquivonome+"|\n").c_str(),f);
         nroquiz.str("");
