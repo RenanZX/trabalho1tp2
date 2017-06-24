@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdexcept>
 #include <iostream>
+#include <sstream>
 #include "dirent.h"
 
 /*verifica qual a versao do SO*/
@@ -22,11 +23,13 @@ class GerQuiz /*gerenciador de quiz*/
 private:
     void PegaAttributo(string dado);/*captura atributos de dados lidos do arquivo com quiz*/
     void ReorganizarPerguntaArquivo(string editind,string novap);/*reorganiza o arquivo quiz com as perguntas*/
-    string FormularPerguntaArquivo(string form1,string form2,string form3); /*formula as perguntas no arquivo*/
+    string FormularPerguntaImprimir(string pergunta);/*formula uma pergunta do arquivo para ser imprimida ao usuario*/
     string BuscarPergunta(string ind);/*busca a pergunta no arquivo atravez de um indice*/
     string data1,data2,data3;/*data1=index de uma pergunta data2=pergunta data3=resposta*/
     string arquivo,diretorio;/*nome do arquivo e nome do diretorio*/
     string indice; /*indice referente aos topicos e disciplinas relacionados*/
+    int limiterespostas;
+    string tabelarelationquiz;
 public:
     GerQuiz(); /*construtor*/
     ~GerQuiz();
