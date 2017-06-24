@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que ir„o interagir com o usuario*/
+class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que ir√£o interagir com o usuario*/
 {
 private:
     static const int ADICIONARP;/*constantes*/
@@ -33,6 +33,8 @@ private:
     void setTableDisc(string disciplina);
     void findTableTopics(string topico)throw(invalid_argument);
     void findTableDisc(string disciplina)throw(invalid_argument);
+    void showTableDisc();
+    void showTableTopics();
     string AddTopDisc()throw(runtime_error);
     string EditarTopDisc()throw(runtime_error);
     string ExcluirTopDisc()throw(runtime_error);

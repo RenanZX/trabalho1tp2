@@ -12,6 +12,8 @@ const int InterfaceUserGerQuiz::DELQUIZ = 5;
 const int InterfaceUserGerQuiz::SAIR = 6;
 const int InterfaceUserQuiz::COMECARQUIZ = 1;
 const int InterfaceUserQuiz::CARREGAP = 2;
+const string InterfaceUserGerQuiz::TABLETOPICS = "tabletop";
+const string InterfaceUserGerQuiz::TABLEDISC = "tabledisc";
 const string InterfaceUserGerQuiz::TABLETOPICS = "tabletop.txt";
 const string InterfaceUserGerQuiz::TABLEDISC = "tabledisc.txt";
 const int InterfaceUserQuiz::SELP = 3;
@@ -41,6 +43,8 @@ void InterfaceUserGerQuiz::setTableTopics(string topico)
         fclose(f);
         f = fopen(TABLETOPICS.c_str(),"w");
     }
+
+    ss << index << "-" << i;
     ss << index << i;
     index = ss.str();
     if(!existe){
@@ -116,6 +120,7 @@ void InterfaceUserGerQuiz::findTableTopics(string topico)throw(invalid_argument)
 
     while((fgets(linha,sizeof(linha),f))&&(!achou)){
         comparar = linha;
+        comparar = comparar.substr(comparar.find("|")+1,comparar.length());
         comparar = comparar.substr(comparar.find("|"),comparar.length());
         comparar = comparar.substr(0,comparar.find("\n"));
         if(comparar == topico){
@@ -144,6 +149,7 @@ void InterfaceUserGerQuiz::findTableDisc(string disciplina)throw(invalid_argumen
 
     while((fgets(linha,sizeof(linha),f))&&(!achou)){
         comparar = linha;
+        comparar = comparar.substr(comparar.find("|")+1,comparar.length());
         comparar = comparar.substr(comparar.find("|"),comparar.length());
         comparar = comparar.substr(0,comparar.find("\n"));
         if(comparar == disciplina){
@@ -162,6 +168,48 @@ void InterfaceUserGerQuiz::findTableDisc(string disciplina)throw(invalid_argumen
     fclose(f);
 }
 
+void InterfaceUserGerQuiz::showTableDisc()
+{
+    FILE *f = fopen(TABLEDISC.c_str(),"r+");
+    char linha[1000];
+    string print;
+
+    cout << "Disciplinas disponiveis:" << endl;
+    while(fgets(linha,sizeof(linha),f)){
+        print = linha;
+        print = print.substr(print.find("|")+1,print.length());
+        cout << print << endl;
+    }
+    fclose(f);
+}
+
+void InterfaceUserGerQuiz::showTableTopics()
+{
+    FILE *f = fopen(TABLETOPICS.c_str(),"r+");
+    char linha[1000];
+    string print;
+
+    cout << "Topicos disponiveis:" << endl;
+    while(fgets(linha,sizeof(linha),f)){
+        print = linha;
+        print = print.substr(print.find("|")+1,print.length());
+        cout << print << endl;
+    }
+    fclose(f);
+}
+
+string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
+{
+    index = "";
+    string erro;
+    string disciplina,topico;
+
+    try{
+        showTableDisc();
+        cout << "Digite a disciplina na qual deseja editar a pergunta:" << endl;
+        getline(cin,disciplina,'\n');
+        findTableDisc(disciplina);
+        showTableTopics();
 string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
 {
     index = "";
@@ -175,6 +223,8 @@ string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
         getline(cin,topico,'\n');
         findTableTopics(topico);
     }catch(invalid_argument &e){
+        erro = e.what();
+        throw runtime_error(erro);
         throw runtime_error(e.what());
     }
     return index;
@@ -186,6 +236,11 @@ string InterfaceUserGerQuiz::ExcluirTopDisc()throw(runtime_error)
     string disciplina,topico;
 
     try{
+        showTableDisc();
+        cout << "Digite a disciplina na qual deseja deletar a pergunta:" << endl;
+        getline(cin,disciplina,'\n');
+        findTableDisc(disciplina);
+        showTableTopics();
         cout << "Digite a disciplina na qual deseja deletar a pergunta:" << endl;
         getline(cin,disciplina,'\n');
         findTableDisc(disciplina);
