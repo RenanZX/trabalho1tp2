@@ -206,6 +206,7 @@ string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
         showTableTopics();
 <<<<<<< HEAD
     }
+}
 string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
 {
     index = "";
