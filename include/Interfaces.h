@@ -1,10 +1,19 @@
+/////////////////////////////////////////
+///     Descrição do arquivo:
+///     @author     Renan Godoi de Medeiros
+///     @since      ??/04/2017
+///     @version    1.0
+/////////////////////////////////////////
+
 #ifndef INTERFACES_H
 #define INTERFACES_H
 #include <stdexcept>
 
 using namespace std;
 
-/*classes abstratas que serao implementadas no controle de interface*/
+//////////////////////////////////////////////////////////////////////////////////
+///		@brief Classes abstratas que serão implementadas no controle de interface
+//////////////////////////////////////////////////////////////////////////////////
 class InterfaceUsuarioGerQuiz
 {
 public:
