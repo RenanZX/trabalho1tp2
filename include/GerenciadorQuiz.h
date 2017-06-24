@@ -30,7 +30,7 @@ private:
     string indice; /*indice referente aos topicos e disciplinas relacionados*/
     int limiterespostas;
     string tabelarelationquiz;
-  public:
+public:
     GerQuiz(); /*construtor*/
     ~GerQuiz();
     void SetIndexTopicDisc(string index);
@@ -39,7 +39,7 @@ private:
     void CarregaQuizEditar()throw(invalid_argument);/*metodo que tenta carregar o quiz previamente setado*/
     void SelecionarArquivo()throw(invalid_argument);/*seleciona o arquivo contendo o quiz*/
     void ApagarQuiz()throw(invalid_argument); /*apaga o arquivo contendo o quiz*/
-    void AdicionarPerguntas()throw(invalid_argument); /*adiciona perguntas ao quiz setado em quest√£o*/
+    void AdicionarPerguntas()throw(invalid_argument); /*adiciona perguntas ao quiz setado em quest„o*/
     void EditarPergunta()throw(invalid_argument);/*editor de perguntas no arquivo do quiz*/
     void DeletarPergunta()throw(invalid_argument);/*deleta perguntas do arquivo com quiz*/
     string getQuizFileName();/*retorna o destino juntamente ao nome do ultimo arquivo setado*/
