@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que ir„o interagir com o usuario*/
+class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que ir√£o interagir com o usuario*/
 {
 private:
     static const int ADICIONARP;/*constantes*/
