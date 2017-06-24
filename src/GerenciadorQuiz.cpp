@@ -190,23 +190,6 @@ void GerQuiz::ReorganizarPerguntaArquivo(string editind,string novap)/*reorganiz
 /*funçoes providas da interface com o usuario pelo gerenciador*/
 void GerQuiz::EditarPergunta()throw(invalid_argument)/*edita a pergunta no arquivo*/
 {
-    string data,ind;
-    string pergunta;
-
-string GerQuiz::FormularPerguntaArquivo(string form1,string form2,string form3)
-{
-    form1 = indice+form1;
-    form1.append("|");/*concatena um pipe em cada string com o index a pergunta e a resposta*/
-    form2.append("|");
-    form3.append("|\n");
-    form2.append(form3);/*junta a pergunta com a resposta*/
-    form1.append(form2);/*a seguir junta a string formada em form2 e junta a n1 formulando a pergunta completa*/
-    return form1;/*retorna a pergunta formulada com o formato correto*/
-}
-
-/*funçoes providas da interface com o usuario pelo gerenciador*/
-void GerQuiz::EditarPergunta()throw(invalid_argument)/*edita a pergunta no arquivo*/
-{
     string data;
     string ind,pergunta,resposta;
     bool carregou;
@@ -287,7 +270,7 @@ string GerQuiz::FormularPerguntaImprimir(string pergunta)
     nota = pergunta.substr(0,pergunta.find("|"));
     pergunta = pergunta.substr(pergunta.find("|")+1,pergunta.length());
     retorno << index << "." << dadopergunta << " nota: " << nota << endl;
-    limite = atof(pergunta.substr(0,pergunta.find("|")).c_str()) - 1;
+    limite = atoi(pergunta.substr(0,pergunta.find("|")).c_str()) - 1;
     pergunta = pergunta.substr(pergunta.find("|"),pergunta.length());
     limiterespostas = limite;
     while(i < limite){
