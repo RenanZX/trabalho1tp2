@@ -136,7 +136,6 @@ void GerenciadorTopico::pesquisarTopico() throw(runtime_error){
                     topico_existente = linha;
                     cout << "Conteudo do topico: " << endl;
                     cout << conteudo_arquivo << endl;
-                    fclose(nome_disciplina);
                 }
                 else{
                     cout << "Topico nao existe!" << endl;

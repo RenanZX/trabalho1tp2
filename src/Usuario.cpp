@@ -64,7 +64,7 @@ string listarDisciplinas(){
 	string minhasDisciplinas = "";
 	listaDisciplinas* buscador;
 	
-	while(buscador != NULL){
+	while(buscador != NULL) {
 		minhasDisciplinas += buscador->d->nome+"\n";
 		buscador = buscador->prox;
 	}

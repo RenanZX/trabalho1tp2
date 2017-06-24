@@ -192,7 +192,7 @@ void GerQuiz::EditarPergunta()throw(invalid_argument)/*edita a pergunta no arqui
 {
     string data,ind;
     string pergunta;
-
+}
 string GerQuiz::FormularPerguntaArquivo(string form1,string form2,string form3)
 {
     form1 = indice+form1;

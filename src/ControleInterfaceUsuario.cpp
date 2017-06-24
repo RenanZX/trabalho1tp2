@@ -210,6 +210,7 @@ string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
         getline(cin,disciplina,'\n');
         findTableDisc(disciplina);
         showTableTopics();
+    }
 string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
 {
     index = "";
