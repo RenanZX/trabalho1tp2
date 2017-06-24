@@ -20,6 +20,8 @@ Vitor Moraes Dellamora - 16/0056802
 -------------------------------------------------------------
 Instruções para compilação e execução correta do sistema:
 -------------------------------------------------------------
+Programa usado para a análise estática do código: cppcheck.
+
 
 ----------------------------------
 Link para o projeto no GitHub:
