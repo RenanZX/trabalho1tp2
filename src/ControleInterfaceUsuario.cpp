@@ -204,7 +204,6 @@ string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
         getline(cin,disciplina,'\n');
         findTableDisc(disciplina);
         showTableTopics();
-<<<<<<< HEAD
     }
 }
 string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
@@ -216,8 +215,6 @@ string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
         cout << "Digite a disciplina na qual deseja editar a pergunta:" << endl;
         getline(cin,disciplina,'\n');
         findTableDisc(disciplina);
-=======
->>>>>>> b667ceef3fed65dbdc4f880e8f53c7153813a487
         cout << "Digite o topico no qual deseja editar a pergunta:" << endl;
         getline(cin,topico,'\n');
         findTableTopics(topico);
