@@ -26,5 +26,5 @@ Programa usado para a análise estática do código: cppcheck.
 ----------------------------------
 Link para o projeto no GitHub:
 
-https://github.com/RenanZX/trabalho1tp2
+https://github.com/RenanZX/trabalhotp2
 ----------------------------------
