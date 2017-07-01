@@ -44,7 +44,7 @@ void GerQuiz::CarregaQuizEditar()throw(invalid_argument)   /*verifica se o arqui
 {
     if(arquivo!=""){    /*caso o arquivo do quiz tenha sido setado,o quiz e carregado na tela do usuario*/
         carregaQuiz();
-        system("pause");
+        PAUSE;
     }else{
         throw invalid_argument("selecione o quiz,antes de carrega-lo"); /*caso contrario e mostrada uma mensagem de erro*/
     }
@@ -105,7 +105,7 @@ void GerQuiz::AdicionarPerguntas()throw(invalid_argument)/*adiciona perguntas ao
                 saida.append(strread);
                 saida.append("|");
                 while((verificar!='n')&&(verificar!='N')){
-                    cout << "Digite a " << i+1 << "º opcao de resposta para essa questao:" << endl;
+                    cout << "Digite a opcao " << i+1 << " de resposta para essa questao:" << endl;
                     getline(cin,strread,'\n');
                     respostas.append(strread);
                     respostas.append("|");
@@ -121,7 +121,7 @@ void GerQuiz::AdicionarPerguntas()throw(invalid_argument)/*adiciona perguntas ao
                 saidastream << i << "|" << respostas;
                 saida.append(saidastream.str());
                 saidastream.str("");
-                cout << "Escolha a opcao correspondente a resposta correta:" << endl;
+                cout << "Escolha a opcao correspondente a resposta correta(1 - " << i << "):" << endl;
                 getline(cin,strread,'\n');
                 if((atof(strread.c_str()) <= 0)&&(atof(strread.c_str()) > i)){
                     fclose(f);
@@ -190,26 +190,6 @@ void GerQuiz::EditarPergunta()throw(invalid_argument)/*edita a pergunta no arqui
 {
     string data,ind;
     string pergunta;
-<<<<<<< HEAD
-}
-string GerQuiz::FormularPerguntaArquivo(string form1,string form2,string form3)
-{
-    form1 = indice+form1;
-    form1.append("|");/*concatena um pipe em cada string com o index a pergunta e a resposta*/
-    form2.append("|");
-    form3.append("|\n");
-    form2.append(form3);/*junta a pergunta com a resposta*/
-    form1.append(form2);/*a seguir junta a string formada em form2 e junta a n1 formulando a pergunta completa*/
-    return form1;/*retorna a pergunta formulada com o formato correto*/
-}
-
-/*funçoes providas da interface com o usuario pelo gerenciador*/
-void GerQuiz::EditarPergunta()throw(invalid_argument)/*edita a pergunta no arquivo*/
-{
-    string data;
-    string ind,pergunta,resposta;
-=======
->>>>>>> b667ceef3fed65dbdc4f880e8f53c7153813a487
     bool carregou;
     int i = 0;
     system(CLEAR);
@@ -266,12 +246,12 @@ void GerQuiz::DeletarPergunta()throw(invalid_argument)/*deleta a pergunta do arq
     }else{
         throw invalid_argument("Erro!Pergunta Inexistente!");
     }
-    system("pause");
+    PAUSE;
 }
 
-string GerQuiz::FormularPerguntaImprimir(string pergunta)
+string GerQuiz::FormularPerguntaImprimir(string pergunta) /*formula uma pergunta do arquivo a ser imprimida ao usuario*/
 {
-    string index,dadopergunta,nota;
+    string index,dadopergunta,nota,retorne;
     std::stringstream retorno;
     int i = 0,limite = 0;
 
@@ -290,7 +270,9 @@ string GerQuiz::FormularPerguntaImprimir(string pergunta)
         pergunta = pergunta.substr(pergunta.find("|")+1,pergunta.length());
         i++;
     }
-    return retorno.str();
+    retorne = retorno.str();
+    retorno.str("");
+    return retorne;
 }
 
 string GerQuiz::BuscarPergunta(string ind)/*busca a pergunta no arquivo*/
@@ -331,7 +313,7 @@ string GerQuiz::getQuizesFilesName()
 {
     DIR *pasta;
     struct dirent *lsdir;
-    pasta = opendir((".\\"+diretorio).c_str());/*abre um diretorio de arquivos contendo quizes*/
+    pasta = opendir((root+diretorio).c_str());/*abre um diretorio de arquivos contendo quizes*/
     string saida,nomesarquivos;
     int nroarquivo=1;
 
@@ -351,7 +333,7 @@ void GerQuiz::SelecionarArquivo()throw(invalid_argument)    /*metodo selecionar 
 {
     DIR *pasta;
     struct dirent *lsdir;
-    pasta = opendir((".\\"+diretorio).c_str());/*abre um diretorio de arquivos contendo quizes*/
+    pasta = opendir((root+diretorio).c_str());/*abre um diretorio de arquivos contendo quizes*/
     int nroarquivo=1;
     string saida;   /*string saida que servira para armazenar o input do usuario*/
     string nomesarquivos;   /*string nomesarquivos que contem todos os nomes de arquivos da pasta*/
@@ -387,7 +369,7 @@ void GerQuiz::SelecionarArquivo()throw(invalid_argument)    /*metodo selecionar 
         }
         arquivo = diretorio+"/"+saida;/*encontrando o nome do arquivo e setado juntamente com o diretorio onde ele sera armazenado*/
         cout << "Quiz selecionado com sucesso!" << endl;/*caso de sucesso imprime para o usuario*/
-        system("pause");
+        PAUSE;
     }else{
         throw invalid_argument("Erro!Falha na seleção do Quiz");/*caso de falha lanca uma excessão*/
     }

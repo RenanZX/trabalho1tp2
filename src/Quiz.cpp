@@ -333,7 +333,7 @@ void Quiz::ComecarQuiz()throw(invalid_argument)
             }else{
                 cout << "Quase!voce quase conseguiu uma boa pontuacao" << endl;
             }
-            system("pause");
+            PAUSE;
         }
         delete l;
     }catch(invalid_argument){
@@ -349,7 +349,7 @@ void Quiz::CarregarQuiz()throw(invalid_argument)
         lerQuiz();
         npergs = l->ShowLista();/*mostra os elementos da lista para o usuario*/
         cout << "Existem no Total " << npergs << " Perguntas" << endl;/*total de perguntas*/
-        system("pause");
+        PAUSE;
     }catch(invalid_argument &e){
         throw invalid_argument(e.what());
     }
@@ -386,7 +386,7 @@ void Quiz::SelecionarPergunta()throw(invalid_argument) /*usuario pode selecionar
         }
         OrganizarLista(ind);/*organiza as perguntas na lista de perguntas*/
         cout << "Perguntas Selecionadas com Sucesso!" << endl;
-        system("pause");
+        PAUSE;
     }else{
         throw invalid_argument("nao existem perguntas a serem selecionadas.");
     }

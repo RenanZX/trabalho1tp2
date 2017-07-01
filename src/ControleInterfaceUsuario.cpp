@@ -204,17 +204,6 @@ string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
         getline(cin,disciplina,'\n');
         findTableDisc(disciplina);
         showTableTopics();
-    }
-}
-string InterfaceUserGerQuiz::EditarTopDisc()throw(runtime_error)
-{
-    index = "";
-    string disciplina,topico;
-
-    try{
-        cout << "Digite a disciplina na qual deseja editar a pergunta:" << endl;
-        getline(cin,disciplina,'\n');
-        findTableDisc(disciplina);
         cout << "Digite o topico no qual deseja editar a pergunta:" << endl;
         getline(cin,topico,'\n');
         findTableTopics(topico);
@@ -289,10 +278,19 @@ void InterfaceUserGerQuiz::EditarQuiz()throw(runtime_error)
         }catch(invalid_argument &e){
             system(CLEAR);
             cout << e.what() << endl;/*manda um feedback se algo der errado*/
-            system("pause");
+            PAUSE;
         }
     }
 
+}
+
+void InterfaceUserGerQuiz::mkdir(const char* nome){
+    std::stringstream ss;
+    std::string output;
+    ss << "mkdir " << nome;
+    output = ss.str();
+    system(output.c_str());
+    ss.clear();
 }
 
 void InterfaceUserGerQuiz::executar()throw(runtime_error)
@@ -342,7 +340,7 @@ void InterfaceUserGerQuiz::executar()throw(runtime_error)
         }catch(invalid_argument &e){
             system(CLEAR);
             cout << e.what() << endl;/*manda um feedback se algo der errado*/
-            system("pause");
+            PAUSE;
         }
     }
 }
@@ -386,7 +384,7 @@ void InterfaceUserQuiz::executar()throw(runtime_error)
         }catch(invalid_argument &e){
             system(CLEAR);
             cout << e.what() << endl;
-            system("pause");
+            PAUSE;
         }
     }
 }
