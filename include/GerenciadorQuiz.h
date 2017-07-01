@@ -10,10 +10,15 @@
 /*verifica qual a versao do SO*/
 #ifdef __WIN32__
 #include <windows.h>
-#include <direct.h>
+#define root "\\."
 #define CLEAR "cls"
-#elif __linux__
+#define PAUSE system("pause")
+#endif // __WIN32__
+#ifdef __linux__
+#include <sys/types.h>
+#define root "./"
 #define CLEAR "clear"
+#define PAUSE cout << "pressione enter para continuar..." << endl;getchar();
 #endif
 
 using namespace std;

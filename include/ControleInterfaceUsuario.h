@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <sstream>
 #include <stdexcept>
-
 using namespace std;
 
 class InterfaceUserGerQuiz:public InterfaceUsuarioGerQuiz/*interfaces que irão interagir com o usuario*/
@@ -38,6 +37,7 @@ private:
     string AddTopDisc()throw(runtime_error);
     string EditarTopDisc()throw(runtime_error);
     string ExcluirTopDisc()throw(runtime_error);
+    void mkdir(const char* nome);
 public:
     void executar()throw(runtime_error);
 };

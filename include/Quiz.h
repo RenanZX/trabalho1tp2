@@ -8,6 +8,12 @@
 #include <ctype.h>
 #include <vector>
 /*#include <tempo.h>*/
+#ifdef __WIN32__
+#define PAUSE system("pause")
+#endif // __WIN32__
+#ifdef __linux__
+#define PAUSE cout << "pressione enter para continuar..." << endl;getchar();
+#endif
 
 using namespace std;
 
