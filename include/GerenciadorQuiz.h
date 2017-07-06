@@ -23,9 +23,28 @@
 
 using namespace std;
 
+class TabelaDisciplinasTopicos
+{
+private:
+    string index;
+    static const string TABLETOPICOS;
+    static const string TABLEDISCIPLINA;
+    void setTableTopics(string topico); /*seta um topico na tabela de topicos*/
+    void setTableDisc(string disciplina); /*seta uma disciplina na tabela de topicos*/
+    void findTableTopics(string topico)throw(invalid_argument); /*busca um topico na tabela e manda uma excessao caso nao encontre*/
+    void findTableDisc(string disciplina)throw(invalid_argument);/*encontra uma disciplina na tabela de disciplinas e manda uma excessao caso nao encontre*/
+public:
+    void showTableDisc(); /*metodo ao qual mostra o conteudo da tabela ao usuario*/
+    void showTableTopics();
+    string AddTopDisc()throw(runtime_error);
+    string EditarTopDisc()throw(runtime_error);
+    string ExcluirTopDisc()throw(runtime_error);
+};
+
 class GerQuiz /*gerenciador de quiz*/
 {
 private:
+    TabelaDisciplinasTopicos tabela;
     void PegaAttributo(string dado);/*captura atributos de dados lidos do arquivo com quiz*/
     void ReorganizarPerguntaArquivo(string editind,string novap);/*reorganiza o arquivo quiz com as perguntas*/
     string FormularPerguntaImprimir(string pergunta);/*formula uma pergunta do arquivo para ser imprimida ao usuario*/
@@ -35,6 +54,7 @@ private:
     string indice; /*indice referente aos topicos e disciplinas relacionados*/
     int limiterespostas;
     string tabelarelationquiz;
+    void mkdir(const char* nome);
 public:
     GerQuiz(); /*construtor*/
     ~GerQuiz();

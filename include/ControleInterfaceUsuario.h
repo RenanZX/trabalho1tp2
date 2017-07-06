@@ -23,21 +23,8 @@ private:
     static const int DELQUIZ;
     static const int EDITQUIZ;
     static const int CREATEQUIZ;
-    static const string TABLETOPICS;
-    static const string TABLEDISC;
     GerQuiz *gerente;
     void EditarQuiz()throw(runtime_error);
-    string index;
-    void setTableTopics(string topico);
-    void setTableDisc(string disciplina);
-    void findTableTopics(string topico)throw(invalid_argument);
-    void findTableDisc(string disciplina)throw(invalid_argument);
-    void showTableDisc();
-    void showTableTopics();
-    string AddTopDisc()throw(runtime_error);
-    string EditarTopDisc()throw(runtime_error);
-    string ExcluirTopDisc()throw(runtime_error);
-    void mkdir(const char* nome);
 public:
     void executar()throw(runtime_error);
 };
