@@ -1,5 +1,225 @@
 #include "GerenciadorQuiz.h"
 
+const string TabelaDisciplinasTopicos::TABLETOPICOS = "tabletop"; /*constantes*/
+const string TabelaDisciplinasTopicos::TABLEDISCIPLINA = "tabledisc";
+
+void TabelaDisciplinasTopicos::setTableTopics(string topico)
+{
+    FILE *f = fopen(TABLETOPICOS.c_str(),"r+");
+    int i = 0;
+    bool existe = false;
+    char linha[1000];
+    string strlinha;
+    std::stringstream ss;
+
+    if(f!=NULL){
+        while((fgets(linha,sizeof(linha),f))&&(!existe)){
+            strlinha = linha;
+            strlinha = strlinha.substr(strlinha.find("|")+1,strlinha.length());
+            strlinha = strlinha.substr(0,strlinha.find("\n"));
+            if(topico == strlinha){
+                existe = true;
+            }else{
+                i++;
+            }
+        }
+    }else{
+        fclose(f);
+        f = fopen(TABLETOPICOS.c_str(),"w");
+    }
+    ss << index << "-" << i;
+    index = ss.str();
+    if(!existe){
+        ss.str("");
+        ss << i << "|" << topico << endl;
+        topico = ss.str();
+        fseek(f,0,SEEK_END);
+        fputs(topico.c_str(),f);
+    }
+    fclose(f);
+}
+
+void TabelaDisciplinasTopicos::setTableDisc(string disciplina)
+{
+    FILE *f = fopen(TABLEDISCIPLINA.c_str(),"r+");
+    int i = 0;
+    bool existe = false;
+    char linha[1000];
+    string strlinha;
+    std::stringstream ss;
+
+    if(f!=NULL){
+        while((fgets(linha,sizeof(linha),f))&&(!existe)){
+            strlinha = linha;
+            strlinha = strlinha.substr(strlinha.find("|")+1,strlinha.length());
+            strlinha = strlinha.substr(0,strlinha.find("\n"));
+            if(disciplina == strlinha){
+                existe = true;
+            }else{
+                i++;
+            }
+        }
+    }else{
+        fclose(f);
+        f = fopen(TABLEDISCIPLINA.c_str(),"w");
+    }
+    ss << i;
+    index = ss.str();
+    if(!existe){
+        ss.str("");
+        ss << i << "|" << disciplina << endl;
+        disciplina = ss.str();
+        fseek(f,0,SEEK_END);
+        fputs(disciplina.c_str(),f);
+    }
+
+    fclose(f);
+}
+
+void TabelaDisciplinasTopicos::findTableTopics(string topico)throw(invalid_argument)
+{
+    FILE *f = fopen(TABLETOPICOS.c_str(),"r+");
+    bool achou = false;
+    char linha[1000];
+    string comparar;
+    std::stringstream ss;
+
+    while((fgets(linha,sizeof(linha),f))&&(!achou)){
+        comparar = linha;
+        comparar = comparar.substr(comparar.find("|")+1,comparar.length());
+        comparar = comparar.substr(0,comparar.find("\n"));
+        if(comparar == topico){
+            achou = true;
+            comparar = linha;
+            comparar = comparar.substr(0,comparar.find("|"));
+            ss << index << comparar;
+            index = ss.str();
+        }
+    }
+    if(!achou){
+        fclose(f);
+        throw invalid_argument("Erro topico nao existe");
+    }
+
+    fclose(f);
+}
+
+void TabelaDisciplinasTopicos::findTableDisc(string disciplina)throw(invalid_argument)
+{
+    FILE *f = fopen(TABLEDISCIPLINA.c_str(),"r+");
+    bool achou = false;
+    char linha[1000];
+    string comparar;
+    std::stringstream ss;
+
+    while((fgets(linha,sizeof(linha),f))&&(!achou)){
+        comparar = linha;
+        comparar = comparar.substr(comparar.find("|")+1,comparar.length());
+        comparar = comparar.substr(0,comparar.find("\n"));
+        if(comparar == disciplina){
+            achou = true;
+            comparar = linha;
+            comparar = comparar.substr(0,comparar.find("|"));
+            ss << comparar;
+            index = ss.str();
+        }
+    }
+    if(!achou){
+        fclose(f);
+        throw invalid_argument("Erro disciplina nao existe");
+    }
+
+    fclose(f);
+}
+
+void TabelaDisciplinasTopicos::showTableDisc()
+{
+    FILE *f = fopen(TABLEDISCIPLINA.c_str(),"r+");
+    char linha[1000];
+    string print;
+
+    cout << "Disciplinas disponiveis:" << endl;
+    while(fgets(linha,sizeof(linha),f)){
+        print = linha;
+        print = print.substr(print.find("|")+1,print.length());
+        cout << print << endl;
+    }
+    fclose(f);
+}
+
+void TabelaDisciplinasTopicos::showTableTopics()
+{
+    FILE *f = fopen(TABLETOPICOS.c_str(),"r+");
+    char linha[1000];
+    string print;
+
+    cout << "Topicos disponiveis:" << endl;
+    while(fgets(linha,sizeof(linha),f)){
+        print = linha;
+        print = print.substr(print.find("|")+1,print.length());
+        cout << print << endl;
+    }
+    fclose(f);
+}
+
+string TabelaDisciplinasTopicos::AddTopDisc()throw(runtime_error)
+{
+    index = "";
+    string disciplina,topico;
+
+    cout << "Digite a disciplina que deseja adicionar ou ja existente:" << endl;
+    getline(cin,disciplina,'\n');
+    setTableDisc(disciplina);
+    cout << "Digite um topico relacionado a esta disciplina:" << endl;
+    getline(cin,topico,'\n');
+    setTableTopics(topico);
+
+    return index;
+
+}
+
+string TabelaDisciplinasTopicos::EditarTopDisc()throw(runtime_error)
+{
+    index = "";
+    string erro;
+    string disciplina,topico;
+
+    try{
+        showTableDisc();
+        cout << "Digite a disciplina na qual deseja editar a pergunta:" << endl;
+        getline(cin,disciplina,'\n');
+        findTableDisc(disciplina);
+        showTableTopics();
+        cout << "Digite o topico no qual deseja editar a pergunta:" << endl;
+        getline(cin,topico,'\n');
+        findTableTopics(topico);
+    }catch(invalid_argument &e){
+        erro = e.what();
+        throw runtime_error(erro);
+    }
+    return index;
+}
+
+string TabelaDisciplinasTopicos::ExcluirTopDisc()throw(runtime_error)
+{
+    index = "";
+    string disciplina,topico;
+
+    try{
+        showTableDisc();
+        cout << "Digite a disciplina na qual deseja deletar a pergunta:" << endl;
+        getline(cin,disciplina,'\n');
+        findTableDisc(disciplina);
+        showTableTopics();
+        cout << "Digite o topico no qual deseja deletar a pergunta:" << endl;
+        getline(cin,topico,'\n');
+        findTableTopics(topico);
+    }catch(invalid_argument &e){
+        throw runtime_error(e.what());
+    }
+    return index;
+}
+
 void GerQuiz::PegaAttributo(string dado) /*pega atributos da string lida do arquivo*/
 {
     int pos = 0;
@@ -79,6 +299,7 @@ void GerQuiz::AdicionarPerguntas()throw(invalid_argument)/*adiciona perguntas ao
     char verificar;
     std::stringstream saidastream;
 
+    SetIndexTopicDisc(tabela.AddTopDisc());
     system(CLEAR);/*limpa a tela*/
     carregaQuiz();/*carrega o quiz*/
     double menor = atof(data1.c_str()); /*converte a ultima variavel lida ao carregar o quiz em menor*/
@@ -192,6 +413,8 @@ void GerQuiz::EditarPergunta()throw(invalid_argument)/*edita a pergunta no arqui
     string pergunta;
     bool carregou;
     int i = 0;
+
+    SetIndexTopicDisc(tabela.EditarTopDisc());
     system(CLEAR);
 
     carregou = carregaQuiz();
@@ -229,6 +452,7 @@ void GerQuiz::EditarPergunta()throw(invalid_argument)/*edita a pergunta no arqui
 
 void GerQuiz::DeletarPergunta()throw(invalid_argument)/*deleta a pergunta do arquivo*/
 {
+    SetIndexTopicDisc(tabela.ExcluirTopDisc());
     system(CLEAR);
     carregaQuiz();
     string indstr;/*indice da pergunta*/
@@ -247,6 +471,15 @@ void GerQuiz::DeletarPergunta()throw(invalid_argument)/*deleta a pergunta do arq
         throw invalid_argument("Erro!Pergunta Inexistente!");
     }
     PAUSE;
+}
+
+void GerQuiz::mkdir(const char* nome){
+    std::stringstream ss;
+    std::string output;
+    ss << "mkdir " << nome;
+    output = ss.str();
+    system(output.c_str());
+    ss.clear();
 }
 
 string GerQuiz::FormularPerguntaImprimir(string pergunta) /*formula uma pergunta do arquivo a ser imprimida ao usuario*/
@@ -302,6 +535,7 @@ GerQuiz::GerQuiz()
     diretorio = "Quizzes";/*pasta de destino aonde estarao os quizes*/
     tabelarelationquiz = "tabquizes"; /*tabela de quizes relacionados*/
     limiterespostas = 0;
+    mkdir(diretorio.c_str()); /*cria um diretorio na raiz do usuario*/
 }
 
 GerQuiz::~GerQuiz()
