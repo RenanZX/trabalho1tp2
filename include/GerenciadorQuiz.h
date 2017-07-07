@@ -28,28 +28,22 @@ class TabelaDisciplinasTopicos
 private:
     string index;
     static const string TABLETOPICOS;
-    static const string TABLEDISCIPLINA;
+    static const string TABLEDISCIPLINAS;
+public:
+    void showTableDisc(); /*metodo ao qual mostra o conteudo da tabela ao usuario*/
+    void showTableTopics();
     void setTableTopics(string topico); /*seta um topico na tabela de topicos*/
     void setTableDisc(string disciplina); /*seta uma disciplina na tabela de topicos*/
     void findTableTopics(string topico)throw(invalid_argument); /*busca um topico na tabela e manda uma excessao caso nao encontre*/
     void findTableDisc(string disciplina)throw(invalid_argument);/*encontra uma disciplina na tabela de disciplinas e manda uma excessao caso nao encontre*/
-public:
-    void showTableDisc(); /*metodo ao qual mostra o conteudo da tabela ao usuario*/
-    void showTableTopics();
-    string AddTopDisc()throw(runtime_error);
-    string EditarTopDisc()throw(runtime_error);
-    string ExcluirTopDisc()throw(runtime_error);
+    string getGeneratedIndex();
 };
 
 class GerQuiz /*gerenciador de quiz*/
 {
 private:
     TabelaDisciplinasTopicos tabela;
-    void PegaAttributo(string dado);/*captura atributos de dados lidos do arquivo com quiz*/
     void ReorganizarPerguntaArquivo(string editind,string novap);/*reorganiza o arquivo quiz com as perguntas*/
-    string FormularPerguntaImprimir(string pergunta);/*formula uma pergunta do arquivo para ser imprimida ao usuario*/
-    string BuscarPergunta(string ind);/*busca a pergunta no arquivo atravez de um indice*/
-    string data1,data2,data3;/*data1=index de uma pergunta data2=pergunta data3=resposta*/
     string arquivo,diretorio;/*nome do arquivo e nome do diretorio*/
     string indice; /*indice referente aos topicos e disciplinas relacionados*/
     int limiterespostas;
@@ -58,16 +52,16 @@ private:
 public:
     GerQuiz(); /*construtor*/
     ~GerQuiz();
+    string BuscarPergunta(string ind);/*busca a pergunta no arquivo atravez de um indice*/
     void SetIndexTopicDisc(string index);
-    void CriarQuiz() throw(invalid_argument);/*metodo que cria o arquivo contendo o quiz*/
-    bool carregaQuiz();/*metodo que carrega o arquivo contendo o quiz*/
-    void CarregaQuizEditar()throw(invalid_argument);/*metodo que tenta carregar o quiz previamente setado*/
-    void SelecionarArquivo()throw(invalid_argument);/*seleciona o arquivo contendo o quiz*/
-    void ApagarQuiz()throw(invalid_argument); /*apaga o arquivo contendo o quiz*/
-    void AdicionarPerguntas()throw(invalid_argument); /*adiciona perguntas ao quiz setado em questão*/
-    void EditarPergunta()throw(invalid_argument);/*editor de perguntas no arquivo do quiz*/
-    void DeletarPergunta()throw(invalid_argument);/*deleta perguntas do arquivo com quiz*/
-    string getQuizFileName();/*retorna o destino juntamente ao nome do ultimo arquivo setado*/
+    void EditarPergunta(string index,string pergunta);
+    void SetPerguntaQuiz(string perguntarquivo)throw(invalid_argument); /*seta uma pergunta no formato do arquivo*/
+    void CriaQuiz(string nomequiz)throw(invalid_argument);
+    void SetQuiz(string nomequiz)throw(invalid_argument);
+    string getPerguntaQuiz(string index);
+    void DeletarPerguntaQuiz(string index)throw(invalid_argument);
+    void DeletarQuizSetado()throw(invalid_argument);
+    string getQuizFileNameSeted();/*retorna o destino juntamente ao nome do ultimo arquivo setado*/
     string getFolderFilesName(); /*retorna a pasta contendo os quizes*/
     string getQuizesFilesName(); /*retorna uma lista com todos os nomes dos quizes dentro de uma pasta*/
 };

@@ -37,8 +37,10 @@ private:
     string index;/*indice da pergunta*/
     string strpergunta;/*pergunta*/
     Resposta resposta;
+    int pontuacao;
 public:
     void SetPergunta(string ind,string per,Resposta *res) throw(invalid_argument); /*seta a pergunta*/
+    void SetPontuacao(int pontos);
     string getIndex();/*retorna o indice da pergunta*/
     string getPergunta(); /*retorna a pergunta*/
     Resposta getResposta(); /*retorna a resposta da pergunta*/
@@ -46,6 +48,7 @@ public:
     bool Comparar(Pergunta p); /*compara duas perguntas*/
     bool CompararResposta(int respostaverificar);
     int getRespostaCorreta();
+    int getPontuacao();
 };
 
 class listaPergunta;
@@ -81,21 +84,30 @@ class Quiz
 {
 private:
     listaPergunta *l;/*ponteiro para a lista de perguntas*/
-    const static int RESPONDER;/*constantes*/
-    const static int PULAR;
-    const static int SAIR;
     void OrganizarLista(string inds);/*organiza a lista apartir de uma string de indices*/
     string topicosdisciplinas;
     string file;
+    int acertos;
+    int erros;
+    int pontuacao;
+    std::vector<string> relatorioquestoes;
+    void SetPergunta(string in,string p,Resposta r,int pontuacao)throw(invalid_argument); /*seta as perguntas para o usuario*/
 public:
     Quiz();/*construtor*/
     virtual ~Quiz();/*destrutor*/
-    void ComecarQuiz()throw(invalid_argument);/*comeca um quiz*/
-    void CarregarQuiz()throw(invalid_argument);/*carrega um quiz existente*/
-    void SelecionarPergunta()throw(invalid_argument); /*seleciona as perguntas para o usuario*/
-    void SetPergunta(string in,string p,Resposta r)throw(invalid_argument); /*seta as perguntas para o usuario*/
-    void lerQuiz()throw(invalid_argument);/*lê o quiz*/
-    void selectTopicosDisciplinas()throw(invalid_argument) /*seleciona o topico e a disciplina a qual o usuario ira responder*/;
+    void SelecionarPerguntas(string indices)throw(invalid_argument);
+    void SelecionarDisciplina(string Disciplina)throw(invalid_argument);
+    void SelecionarTopico(string Topico)throw(invalid_argument);
+    int ImprimirPerguntas()throw(invalid_argument);
+    bool QuizTerminou();
+    Pergunta* QuizgetPergunta();
+    void QuizPularPergunta(Pergunta *p)throw(invalid_argument);
+    void QuizResponderPergunta(Pergunta *p,int resposta)throw(invalid_argument);
+    std::vector<string> QuizgetRelatorio();
+    int getNumeroAcertos();
+    int getNumeroErros();
+    int getPontosUsuario();
+    void lerQuiz(string nomequiz)throw(invalid_argument);/*lê o quiz*/
 };
 
 #endif // QUIZ_H
