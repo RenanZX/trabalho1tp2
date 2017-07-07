@@ -40,9 +40,9 @@ void InterfaceUsuario::mostrarOpcoes()throw(runtime_error)
 }
 
 
-void InterfaceUsuario::executarOpcao(int opt)throw(runtime_error)
+void InterfaceUsuario::executarOpcao(int opcao)throw(runtime_error)
 {
-	switch(opt){
+	switch(opcao){
 
 		case LOGAR:
 
