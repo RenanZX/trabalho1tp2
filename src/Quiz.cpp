@@ -1,9 +1,5 @@
 #include "Quiz.h"
 
-const int Quiz::RESPONDER = 1;
-const int Quiz::PULAR = 2;
-const int Quiz::SAIR = 3;
-
 Resposta::~Resposta()
 {
 
@@ -94,6 +90,16 @@ bool Pergunta::Comparar(Pergunta p)/*compara duas perguntas e retorna verdadeiro
         return true;
     }
     return false;
+}
+
+void Pergunta::SetPontuacao(int pontos)
+{
+    pontuacao = pontos;
+}
+
+int Pergunta::getPontuacao()
+{
+    return pontuacao;
 }
 
 bool Pergunta::CompararResposta(int respostaverificar)
@@ -212,9 +218,40 @@ bool listaPergunta::deletarElemento(string ind)/*deleta um elemento da lista*/
     return achou;
 }
 
+int Quiz::getNumeroAcertos()
+{
+    return acertos;
+}
+
+int Quiz::getNumeroErros()
+{
+    return erros;
+}
+
+int Quiz::getPontosUsuario()
+{
+    return pontuacao;
+}
+
+bool Quiz::QuizTerminou()
+{
+    if(l->EstaVazia()){
+        return true;
+    }
+    return false;
+}
+
+Pergunta * Quiz::QuizgetPergunta()
+{
+    return l->getInicio();
+}
+
 
 Quiz::Quiz()
 {
+    acertos = 0;
+    erros = 0;
+    pontuacao = 0;
     l = new listaPergunta();
 }
 
@@ -246,210 +283,105 @@ void Quiz::OrganizarLista(string inds)/*organiza a lista com quiz apartir de uma
     l = aux;
 }
 
-void Quiz::SetPergunta(string in,string per,Resposta r)throw(invalid_argument)
+void Quiz::SetPergunta(string in,string per,Resposta r,int pontuacao)throw(invalid_argument)
 {
     Pergunta *p = new Pergunta();/*aloca dinamicamente um ponteiro para o tipo abstrato pergunta*/
     try{    /*tenta setar a pergunta na variavel de classe alocada*/
         p->SetPergunta(in,per,&r);
+        p->SetPontuacao(pontuacao);
     }catch(invalid_argument &e){/*manda um feedback de erro caso nao consiga*/
         throw invalid_argument("Erro ao Carregar Pergunta");
     }
     l->SetFinal(p);/*insere a pergunta no final da lista*/
 }
 
-void Quiz::ComecarQuiz()throw(invalid_argument)
+void Quiz::QuizPularPergunta(Pergunta* p)throw(invalid_argument)
 {
-    std::vector<string> relatorioquestoes;
+    if(p == NULL) throw invalid_argument("Erro pergunta nula");
+    l->SetFinal(p);
+}
+
+void Quiz::QuizResponderPergunta(Pergunta* p,int resposta)throw(invalid_argument)
+{
     std::stringstream streamrelatorio;
     string relatorioquestao;
-    //tempo tempoquestao;
-    int resposta;
-    int acertos = 0;
-    int erros = 0;
-    int opcoes = 0;
-    bool saiu = false;
 
-    try{
-        if(l->EstaVazia()){/*se a lista estiver vazia faz a leitura do arquivo do quiz*/
-            lerQuiz();
-        }
-        Pergunta *p;
-        system(CLEAR);
-        while((!l->EstaVazia())&&(!saiu)){/*testa se o user saiu ou se a lista de perguntas ainda existem perguntas*/
-            system(CLEAR);
-            p = l->getInicio();
-            cout << p->getIndex() << ". "<< p->getPergunta() << endl;/*opcoes do usuario*/
-            p->ImprimirOpcoes();
-            cout << "\nOque deseja fazer?" << endl;
-            cout << RESPONDER << ". Responder" << endl;
-            cout << PULAR << ". Pular Questao" << endl;
-            cout << SAIR << ". Sair do Quiz" << endl;
-            cout << "Digite uma opcao" << endl;
-            cin >> opcoes;
-            cin.ignore(1000,'\n');
-
-            switch(opcoes)/*opcoes do usuario*/
-            {
-                case RESPONDER:
-                    //tempoquestao.inciaContagem();
-                    cout << "Digite a opcao correspondente a sua resposta:" << endl;
-                    cin >> resposta;
-                    cin.ignore(1000,'\n');
-                    if(p->CompararResposta(resposta)){/*compara as respostas e incrementa os acertos e os erros*/
-                        streamrelatorio << p->getIndex() << ". Resp.:" << resposta << ") resposta correta";
-                        acertos++;
-                    }else{
-                        streamrelatorio << p->getIndex() << ". Resp.:" << p->getRespostaCorreta() << ") resposta errada voce respondeu " << resposta << ")";
-                        erros++;
-                    }
-                    //tempoquestao.terminaContagem();
-                    //streamrelatorio << "voce demorou " << tempoquestao.tempoGasto() << "segundos para esta questao";
-                    relatorioquestao = streamrelatorio.str();
-                    streamrelatorio.str("");
-                    relatorioquestoes.push_back(relatorioquestao);
-                    free(p);
-                    break;
-                case PULAR:
-                    l->SetFinal(p);
-                    break;
-                case SAIR:
-                    free(p);
-                    saiu = true;
-                    break;
-                default:
-                    break;
-            }
-        }
-        if(!saiu){
-            for(std::vector<string>::const_iterator relatquestao=relatorioquestoes.begin();relatquestao!=relatorioquestoes.end();relatquestao++){
-                cout << *relatquestao << endl;
-            }
-            cout << "Voce acertou " << acertos << " perguntas" << endl;/*mostra a pontuacao do usuario*/
-            cout << "Voce errou " << erros << " perguntas" << endl;
-            if(acertos > erros){
-                cout << "Parabens!Sua pontuacao foi excelente" << endl;/*feedback para o usuario*/
-            }else if(acertos < erros){
-                cout << "Que pena,sua pontuacao foi terrivel mas voce pode tentar mais vezes" << endl;
-            }else{
-                cout << "Quase!voce quase conseguiu uma boa pontuacao" << endl;
-            }
-            PAUSE;
-        }
-        delete l;
-    }catch(invalid_argument){
-        throw invalid_argument("Erro nao foi possivel comecar o quiz");
+    if((p == NULL)||(resposta == 0)) throw invalid_argument("Erro pergunta ou resposta nula");
+    if(p->CompararResposta(resposta)){/*compara as respostas e incrementa os acertos e os erros*/
+        streamrelatorio << p->getIndex() << ". Resp.:" << resposta << ") resposta correta";
+        acertos++;
+        pontuacao+=p->getPontuacao();
+    }else{
+        streamrelatorio << p->getIndex() << ". Resp.:" << p->getRespostaCorreta() << ") resposta errada voce respondeu " << resposta << ")";
+        erros++;
     }
+    //tempoquestao.terminaContagem();
+    //streamrelatorio << "voce demorou " << tempoquestao.tempoGasto() << "segundos para esta questao";
+    relatorioquestao = streamrelatorio.str();
+    streamrelatorio.str("");
+    relatorioquestoes.push_back(relatorioquestao);
 }
 
-void Quiz::CarregarQuiz()throw(invalid_argument)
+std::vector<string> Quiz::QuizgetRelatorio()
 {
-    int npergs;/*numero de perguntas*/
-
-    try{
-        lerQuiz();
-        npergs = l->ShowLista();/*mostra os elementos da lista para o usuario*/
-        cout << "Existem no Total " << npergs << " Perguntas" << endl;/*total de perguntas*/
-        PAUSE;
-    }catch(invalid_argument &e){
-        throw invalid_argument(e.what());
-    }
+    return relatorioquestoes;
 }
 
-void Quiz::SelecionarPergunta()throw(invalid_argument) /*usuario pode selecionar as perguntas que deseja responder*/
+int Quiz::ImprimirPerguntas()throw(invalid_argument)
 {
+    int nperguntas = 0;
+
+    if(l->EstaVazia()) throw invalid_argument("Erro Nao Existem Perguntas na lista");
+
+    nperguntas = l->ShowLista(); /*mostra os elementos da lista para o usuario*/
+    return nperguntas;
+}
+
+void Quiz::SelecionarPerguntas(string indices)throw(invalid_argument)
+{
+    int i=0,j=0;
     if((file!="")&&(!l->EstaVazia())){/*testa se a lista nao esta vazia*/
         l->ShowLista();
-        string ind;
-        int i = 0;
-        int j = 0;
-
-        bool fechar = false;
-        while(!fechar){
-            cout << "Digite o(s) indice(s) da(s) pergunta(s) que deseja selecionar(separe os indices por , ex.:1,2.):" << endl;
-            getline(cin,ind,'\n');
-            j = ind.length();
-            if((ind[j-1]!='.')||(!isdigit(ind[0]))){
-                cout << "formato incorreto digite novamente" << endl;
-            }else{
-                fechar = true;
-            }
-        }
-        ind[j-1] = '|';
-
-        while(ind[i]!='|'){
-            if(ind[i]==','){
-                ind[i] = '|';
-                i++;
-            }else{
-                i++;
-            }
-        }
-        OrganizarLista(ind);/*organiza as perguntas na lista de perguntas*/
-        cout << "Perguntas Selecionadas com Sucesso!" << endl;
-        PAUSE;
+        i = 0;
+        j = indices.length();
     }else{
-        throw invalid_argument("nao existem perguntas a serem selecionadas.");
+        throw invalid_argument("Nao Existem Perguntas a Serem selecionadas");
     }
+    if((indices[j-1]!='.')||(!isdigit(indices[0]))){
+        throw invalid_argument("formato incorreto digite novamente");
+    }
+    indices[j-1] = '|';
 
+    while(indices[i]!='|'){
+        if(indices[i]==','){
+            indices[i] = '|';
+            i++;
+        }else{
+            i++;
+        }
+    }
+    OrganizarLista(indices);/*organiza as perguntas na lista de perguntas*/
 }
 
-void Quiz::selectTopicosDisciplinas()throw(invalid_argument) /*faz a seleçao de topicos e disciplinas do usuario*/
+void Quiz::SelecionarDisciplina(string Disciplina)throw(invalid_argument)
 {
-    FILE *f = fopen("tabledisc","r+");/*faz a leitura das tabelas*/
-    char linha[1000];
-    string print;
-    int i = 0;
-    int total = 0,entrada = 0;
-    std::stringstream strstream;
-
-    cout << "Disciplinas disponíveis" << endl;/*mostra as disciplinas disponiveis*/
-    while(fgets(linha,sizeof(linha),f)){
-        print = linha;
-        i = atoi(print.substr(0,print.find("|")).c_str()) +1;
-        cout << i << "." << print.substr(print.find("|")+1,print.length()) << endl;
-        total++;
-    }
-    cout << "Digite uma disciplina de acordo com o numero indicado:" << endl;/*solicita ao usuario selecionar uma*/
-    cin >> entrada;
-    getchar();
-    if((entrada < 1)||(entrada > total)){ /*testa se o usuario digitou algo errado*/
-        throw invalid_argument("entrada invalida!");
-    }
-    strstream << (entrada - 1) << "-";
-    fclose(f);
-    f = fopen("tabletop","r+");
-    cout << "Topicos disponíveis" << endl;
-    while(fgets(linha,sizeof(linha),f)){/*abre a tabela e topicos e solicita ao usuario selecionar tambem*/
-        print = linha;
-        i = atoi(print.substr(0,print.find("|")).c_str()) +1;
-        cout << i << "." << print.substr(print.find("|")+1,print.length()) << endl;
-        total++;
-    }
-    cout << "Digite um topico de acordo com o numero indicado:" << endl;
-    cin >> entrada;
-    getchar();
-    if((entrada < 1)||(entrada > total)){
-        throw invalid_argument("entrada invalida!");
-    }
-    strstream << (entrada - 1);
-    topicosdisciplinas = strstream.str();
-    strstream.str("");
-    fclose(f);
+    topicosdisciplinas = Disciplina;
+    topicosdisciplinas.append("-");
 }
 
-void Quiz::lerQuiz()throw(invalid_argument)/*carregador de quiz*/
+void Quiz::SelecionarTopico(string Topico)throw(invalid_argument)
 {
-
-    GerQuiz gerente;/*cria uma variavel gerenciador de Quiz*/
-    try{
-        gerente.SelecionarArquivo();/*o usuario seleciona o arquivo contendo o quiz*/
-        selectTopicosDisciplinas();/*seleciona os topicos e disciplinas que irá responder*/
-    }catch(invalid_argument &e){
-        system(CLEAR);
-        string error = e.what();
-        throw invalid_argument("Nao foi possivel ler o quiz pois "+error);
+    if(topicosdisciplinas!=""){
+        topicosdisciplinas.append(Topico);
+    }else{
+        throw invalid_argument("Erro Disciplina nao selecionada!");
     }
-    file = gerente.getQuizFileName();/*pega o nome do arquivo contando o quiz*/
+}
+
+void Quiz::lerQuiz(string nomequiz)throw(invalid_argument)/*carregador de quiz*/
+{
+    if(!l->EstaVazia()) throw invalid_argument("Erro lista de perguntas nao vazia!");
+    file = nomequiz;
     char linha[1000];
     int pos = 0;
     string entrada,ind,per,nota;
@@ -476,7 +408,7 @@ void Quiz::lerQuiz()throw(invalid_argument)/*carregador de quiz*/
                     pos = entrada.find("|")+1;
                     entrada = entrada.substr(pos,entrada.length());
                     res.SetRespostasArquivo(entrada);/*e por fim os dados sao organizados pela classe resposta a qual ja consegue organizar e reconhecer as respostas do arquivo*/
-                    SetPergunta(ind,per,res);/*seta a pergunta com a resposta o indice e a pergunta*/
+                    SetPergunta(ind,per,res,atoi(nota.c_str()));/*seta a pergunta com a resposta o indice e a pergunta*/
                 }
             }
         }catch(invalid_argument &e){
