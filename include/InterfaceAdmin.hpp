@@ -1,7 +1,7 @@
 #ifndef INTERFACEADMIN_H
 #define INTERFACEADMIN_H
 
-#include "Interfaces.hpp"
+#include "Interfaces.h"
 #include "Usuario.hpp"
 #include "Disciplina.hpp"
 #include "Quiz.hpp"
@@ -12,7 +12,7 @@
 using namespace std;
 
 /*interfaces que irão interagir com o usuario*/
-class InterfaceAdmin:public InterfacePrograma
+class InterfaceAdmin:public Interface
 {
 private:
 	/*constantes*/
@@ -59,7 +59,7 @@ private:
 public:
 
 	void mostrarOpcoes()throw(runtime_error);
-	void executarOpcao(int)throw(runtime_error);
+	void executarOpcao(int opcao)throw(runtime_error);
 
 };
 
