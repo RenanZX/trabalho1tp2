@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "GerenciaDisciplinas.h"
-#include "GerenciadorQuiz.h"
 
 class Usuario{
 	private:
@@ -13,7 +11,7 @@ class Usuario{
 		enum PERFIL {admin, estudante} perfil;
 		bool logado;
 
-		typedef struct listaDisciplinas;
+		typedef struct caderno;
 
 	public:
 		string getNome();
@@ -26,16 +24,14 @@ class Usuario{
 		void setPerfil(char);
 
 		Usuario();
+		Usuario(string, string, string, int);
 
 
 		string listarDisciplinas();
 
 		void adicionarDisciplina(int);
 
-		bool Login(string, string);
-
-		void Cadastrar(string, string, string, int, listaDisciplinas*);
-
+		void carregarDisciplinas(string);
 
 		void criarDisciplina (string, GerenciaDisciplinas);
 

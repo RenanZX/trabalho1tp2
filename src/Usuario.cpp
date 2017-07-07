@@ -1,18 +1,18 @@
 #include "Usuario.h"
-using namespace System;
-using namespace System::IO;
+#include <stdio.h>
+#include <stdlib.h>
 
 //class Usuario{
 string nome;//[50];
 string login;//[30];
 string senha;//[30];
-enum PERFIL {admin, estudante} perfil;
+enum PERFIL {admin = 1, estudante = 0} perfil;
 bool logado = false;
 
-typedef struct listaDisciplinas{
-	Disciplina d;
-	listaDisciplinas* prox;
-} listaDisciplinas ld;
+typedef struct caderno{
+	int ID;
+	caderno* prox;
+} caderno c;
 
 string getNome(){
 	return nome;
@@ -62,7 +62,7 @@ void Usuario(){
 //lista de disciplinas do usuario, de uma vez
 string listarDisciplinas(){
 	string minhasDisciplinas = "";
-	listaDisciplinas* buscador;
+	caderno* buscador;
 	
 	while(buscador != NULL) {
 		minhasDisciplinas += buscador->d->nome+"\n";
@@ -78,81 +78,30 @@ string listarDisciplinas(){
 //utilizando o codigo recebido por parametro
 void adicionarDisciplina(int codigo){
 
-	listaDisciplinas* procurador = ld;
+	caderno* procurador = ld;
 	while(procurador != NULL){
 		procurador = procurador->prox;
 	}
-	procurador = malloc(sizeof(listaDisciplinas));
+	procurador = malloc(sizeof(caderno));
 	
 	procurador->d = GerDisciplinas.getDisciplina(codigo);
 
 	return;
 }
 
-//Faz o login de um usuario
-bool Login(string l, string s){
-	string loginLeitura;
-	string senhaLeitura;
-	string nomeLeitura;
-	string perfilLeitura;
-	string disciplinasLeitura;
-	
-	string f = "usuarios.bin";
-	StreamReader^ file = File::OpenText(f);
-	
-	do {
-		fscanf(file, "%[^|]%[^|]%[^|]%[^|]%[^\n]",
-			&loginLeitura, 
-			&senhaLeitura, 
-			&nomeLeitura,
-			&perfilLeitura,
-			&disciplinasLeitura);
-			
-		if (loginLeitura == l) && (senhaLeitura == s){
-			nome = nomeLeitura;
-			login = l;
-			senha = s;
-			perfil = ((perfilLeitura == 1) ? admin : estudante);
-			//Adicionar disciplinas
-			
-			string leitor;
-			listaDisciplinas* lds = malloc(sizeof(listaDisciplinas));
-			ld = lds;
-			fscanf(disciplinasLeitura,"%[^\n]",&leitor);
-			while(leitor != NULL){
-				lds->d = GerDisciplinas.getDisciplina(leitor.toInt32());
-				lds->prox = malloc(sizeof(listaDisciplinas));
-				lds = lds->prox;
-			}
-			free(lds);
-			logado = true;
-			break;
-		}
-	} while (loginLeitura != EOF);
-
-	file.close();
-	return logado;
-}
-
-//Adiciona um usuario no arquivo de usuarios, para que ele possa, futuramente,
-//logar e utilizar o sistema
-void Cadastrar(string l, string s, string n, int p, listaDisciplinas* disc){
-	if (perfil != admin){
-		return;
-	}
-	
-	StreamWriter^ f = gcnew StreamWriter("usuarios.bin");
-	//f.Write( l + "|" + s + "|" + n + "|" + p );
-	
-	listaDisciplinas* ld = disc;
-	while (ld != NULL){
-		f.Write("|");
-		f.Write(ld->d.getCodigo());
-		ld = ld->prox;
-	}
-	f.Write("\n");
-	
-	f.close();
+void carregarDisciplinas(string disciplinasLeitura){
+	int leitor;
+	char contador;
+	caderno* lds = malloc(sizeof(caderno));
+	c = lds;
+	do(leitor != NULL){
+		fscanf(disciplinasLeitura,"%d",&leitor);
+		lds->ID = leitor;
+		lds->prox = malloc(sizeof(caderno));
+		lds = lds->prox;
+		fscanf(disciplinasLeitura,"%[^|]",&leitor);
+	} while ((contador = fgetc(disciplinasLeitura)) != EOF);//"\n");
+	free(lds);
 	return;
 }
 
@@ -224,3 +173,7 @@ void deletarQuiz (string pergunta, GerQuiz quiz){
 }
 
 //}
+
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+////////////////////////////////////////////////////////////////////////////////
