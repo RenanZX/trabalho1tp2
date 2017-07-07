@@ -20,6 +20,7 @@ private:
 	static const int CADASTRAR;
 	static const int SAIR;
 
+	bool fecha;
 	Usuario user;
 
 	bool Login(string, string);

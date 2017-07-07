@@ -2,12 +2,12 @@
 
 const int InterfaceUsuario::LOGAR = 1;
 const int InterfaceUsuario::CADASTRAR = 2;
-const int InterfaceUsuario::SAIR = 3;
+const int InterfaceUsuario::SAIR = 0;
 
 
 void InterfaceUsuario::mostrarOpcoes()throw(runtime_error)
 {
-	bool fecha = false;
+	fecha = false;
 	int opt;
 	//user = new Usuario();
 	while(!fecha){
@@ -56,10 +56,10 @@ void InterfaceUsuario::executarOpcao(int opt)throw(runtime_error)
 				if (Login(l, s)){
 					if (user.getPerfil()){
 						InterfaceAdmin adm = new InterfaceAdmin();
-						adm.mostrarOpcoes();
+						adm.mostrarOpcoes(user, &fecha);
 					} else {
 						InterfaceEstudo est = new InterfaceEstudo();
-						est.mostrarOpcoes();
+						est.mostrarOpcoes(user, &fecha);
 					}
 				} else {
 					cout << "Dados inválidos." << endl;

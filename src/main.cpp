@@ -10,6 +10,8 @@ void main(){
 		//Chama impressora da InterfaceUsuario
 			/// serão mostradas as opções que o usuário tem:
 			/// Cadastrar; Logar; Sair
+		InterfaceUsuario u = new InterfaceUsuario();
+		u.mostrarOpcoes();
 		//InterfaceUsuario::opções();
 
 		//Ao logar (ou após cadastro), chama opções referentes
