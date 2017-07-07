@@ -1,7 +1,7 @@
 #ifndef INTERFACEUSUARIO_H
 #define INTERFACEUSUARIO_H
 
-#include "Interfaces.hpp"
+#include "Interfaces.h"
 #include "Usuario.hpp"
 #include "InterfaceAdmin.hpp"
 #include "InterfaceEstudo.hpp"
@@ -11,8 +11,8 @@
 #include <stdexcept>
 using namespace std;
 
-/*interfaces que ir„o interagir com o usuario*/
-class InterfaceUsuario:public InterfacePrograma
+/*interfaces que ir√£o interagir com o usuario*/
+class InterfaceUsuario:public Interface
 {
 private:
 	/*constantes*/
@@ -29,7 +29,7 @@ private:
 public:
 	void mostrarOpcoes()throw(runtime_error);
 	//void mostrarOpcoes(Usuario)throw(runtime_error);
-	void executarOpcao(int)throw(runtime_error);
+	void executarOpcao(int opcao)throw(runtime_error);
 };
 
 #endif //INTERFACEUSUARIO_H
