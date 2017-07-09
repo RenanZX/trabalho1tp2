@@ -31,15 +31,9 @@ void InterfaceEstudo::mostrarOpcoes(Usuario& u, bool* fecha)throw(runtime_error)
 					break;
 
 				case RESPONDER:
-					cout << u.listarDisciplinas(); << endl;
-					cout << "Digite o código de uma disciplina" << endl;
-					cin >> c;
-					listarQuiz(c);
-					Quiz* q = new Quiz();
-					q->CarregarQuiz();
-					q->ComeçarQuiz();
-					//cout << "Digite o código de um quiz" << endl;
-					//cin >> c;
+					Interface *Quiz = new InterfaceQuiz();
+					Quiz->MostrarOpcoes();
+					free(Quiz);
 					break;
 
 				case default:
