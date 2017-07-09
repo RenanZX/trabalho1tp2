@@ -1,4 +1,4 @@
-#include "GerenciaDisciplinas.h"
+#include "Disciplina.hpp"
 #include <iostream>
 #include <stdio.h>
 
@@ -49,46 +49,6 @@ void Disciplina::validarCodigo (string codigo) throw (invalid_argument){
 }
 
 void GerenciaDisciplinas::criarDisciplina (){
-	Disciplina disciplina;
-	string disciplina_a_adicionar;
-	string codigo_a_adicionar;
-	opcao = CONTINUAR;
-
-
-    lista_disciplinas = fopen("lista_disciplinas.txt", "a");
-
-
-	while(opcao != SAIR) {
-		cout << "Insira o nome da Disciplinas a ser adicionada." << endl;
-		cin >> disciplina_a_adicionar;
-        while(getchar() != '\n');
-		nome_arquivo = disciplina_a_adicionar +".txt";
-		arquivo_disciplina = fopen(nome_arquivo.c_str(), "r");
-		if(arquivo_disciplina != NULL) {
-			cout << "A disciplina ja existe" << endl;
-		}
-		else {
-			try {
-				disciplina.setNome(disciplina_a_adicionar);
-				cout << "Insira o codigo da disciplina a ser criada." << endl;
-				cin >> codigo_a_adicionar;
-				disciplina.setCodigo(codigo_a_adicionar);
-				arquivo_disciplina = fopen(nome_arquivo.c_str(), "w");
-				cout << "A disciplina foi criada." << endl;
-				fprintf(arquivo_disciplina, "%s | %s", codigo_a_adicionar.c_str(),disciplina_a_adicionar.c_str());
-				fprintf(lista_disciplinas, "%s | %s\n" , codigo_a_adicionar.c_str(),disciplina_a_adicionar.c_str());
-				fclose(arquivo_disciplina);
-
-			}
-			catch (invalid_argument excecao) {
-				cout << excecao.what() << endl;
-
-			}
-		}
-		cout << "Aperte 1 para continuar ou 0 para sair." << endl;
-		cin >> opcao;
-	}
-	fclose(lista_disciplinas);
 
 }
 void GerenciaDisciplinas::removerDisciplina() {

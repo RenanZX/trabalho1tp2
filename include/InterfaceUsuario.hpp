@@ -2,7 +2,7 @@
 #define INTERFACEUSUARIO_H
 
 #include "Interfaces.hpp"
-#include "Usuario.hpp"
+//#include "Usuario.hpp"
 #include "InterfaceAdmin.hpp"
 #include "InterfaceEstudo.hpp"
 #include <stdio.h>
@@ -12,8 +12,7 @@
 using namespace std;
 
 /*interfaces que irão interagir com o usuario*/
-class InterfaceUsuario:public InterfacePrograma
-{
+class InterfaceUsuario{//:public InterfacePrograma{
 private:
 	/*constantes*/
 	static const int LOGAR;
@@ -23,8 +22,8 @@ private:
 	bool fecha;
 	Usuario user;
 
-	bool Login(string, string);
-	void Cadastrar(string, string, string, int);
+	bool Login(string, string)throw(runtime_error);;
+	void Cadastrar(string, string, string, int)throw(runtime_error);
 	void Sair();
 public:
 	void mostrarOpcoes()throw(runtime_error);

@@ -2,6 +2,7 @@
 #define INTERFACEADMIN_H
 
 #include "Interfaces.hpp"
+#include "GerenciadorQuiz.hpp"
 #include "Usuario.hpp"
 #include "Disciplina.hpp"
 #include "Quiz.hpp"
@@ -12,8 +13,7 @@
 using namespace std;
 
 /*interfaces que irão interagir com o usuario*/
-class InterfaceAdmin:public InterfacePrograma
-{
+class InterfaceAdmin{//:public InterfacePrograma{
 private:
 	/*constantes*/
 	static const char USUARIOS;
@@ -37,11 +37,11 @@ private:
 	Disciplina disc;
 	Quiz quiz;
 
-	void criarUsuario(string, string, string, int);
+	void criarUsuario(string, string, string, int)throw(runtime_error);
 	void alterarUsuario(string, string, string, int);
 	void deletarUsuario(string);
 
-	void criarDisciplina(string);
+	void criarDisciplina(string, int);
 	void alterarDisciplina(int);
 	void deletarDisciplina(int);
 	void adicionarTopico(int, string);
@@ -54,12 +54,10 @@ private:
 	void listarDisciplinas();
 	void listarQuiz();
 
-	void Voltar();
-	void Sair();
 public:
 
-	void mostrarOpcoes()throw(runtime_error);
-	void executarOpcao(int)throw(runtime_error);
+	void mostrarOpcoes(Usuario&, bool*)throw(runtime_error);
+	void executarOpcao(int, bool*)throw(runtime_error);
 
 };
 

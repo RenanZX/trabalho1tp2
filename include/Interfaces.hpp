@@ -5,13 +5,7 @@
 using namespace std;
 
 /*classes abstratas que serao implementadas no controle de interface*/
-class InterfaceUsuarioGerQuiz
-{
-public:
-    virtual void executar()throw(runtime_error) = 0;
-};
-
-class InterfaceUsuarioQuiz
+class InterfacePrograma
 {
 public:
     virtual void executar()throw(runtime_error) = 0;

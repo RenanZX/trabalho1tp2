@@ -5,8 +5,7 @@ const int InterfaceUsuario::CADASTRAR = 2;
 const int InterfaceUsuario::SAIR = 0;
 
 
-void InterfaceUsuario::mostrarOpcoes()throw(runtime_error)
-{
+void InterfaceUsuario::mostrarOpcoes()throw(runtime_error){
 	fecha = false;
 	int opt;
 	//user = new Usuario();
@@ -26,8 +25,8 @@ void InterfaceUsuario::mostrarOpcoes()throw(runtime_error)
 				executarOpcao(opt);
 			} else {
 				fecha = true;
-				free(user);
-				return;
+				//delete &user;
+				break;
 			}
 
 		}catch(invalid_argument &e){
@@ -44,22 +43,21 @@ void InterfaceUsuario::executarOpcao(int opt)throw(runtime_error)
 {
 	switch(opt){
 
-		case LOGAR:
-
+		case LOGAR:{
 			string l, s;
-			cout << "Digite o usuário: ";
+			cout << "Digite o usuário: " << endl;
 			cin >> l;
-			cout << "Digite a senha: ";
+			cout << "Digite a senha: " << endl;
 			cin >> s;
 
 			try{
 				if (Login(l, s)){
 					if (user.getPerfil()){
-						InterfaceAdmin adm = new InterfaceAdmin();
-						adm.mostrarOpcoes(user, &fecha);
+						InterfaceAdmin* adm = new InterfaceAdmin();
+						adm->mostrarOpcoes(user, &fecha);
 					} else {
-						InterfaceEstudo est = new InterfaceEstudo();
-						est.mostrarOpcoes(user, &fecha);
+						InterfaceEstudo* est = new InterfaceEstudo();
+						est->mostrarOpcoes(user, &fecha);
 					}
 				} else {
 					cout << "Dados inválidos." << endl;
@@ -67,28 +65,30 @@ void InterfaceUsuario::executarOpcao(int opt)throw(runtime_error)
 			} catch (runtime_error &e){
 				cout << "Erro no login." << endl;
 			}
-			break;
+			break;}
 
-		case CADASTRAR:
-
+		case CADASTRAR:{
 			string l, s, n;
-			cout << "Digite o usuário: ";
+			cout << "Digite o usuário: " << endl;
 			cin >> l;
-			cout << "Digite a senha: ";
+			cout << l << endl;
+			cout << "Digite a senha: " << endl;
 			cin >> s;
-			cout << "Digite o nome: ";
+			cout << s << endl;
+			cout << "Digite o nome: " << endl;
 			cin >> n;
+			cout << n << endl;
 
 			try{
 				Cadastrar(l, s, n, 0);
 			} catch (runtime_error &e){
 				cout << "Erro no cadastro." << endl;
 			}
-			break;
+			break;}
 
-		default:
+		default:{
 			return;
-			break;
+			break;}
 	}
 }
 
@@ -97,11 +97,10 @@ bool InterfaceUsuario::Login(string l, string s)throw(runtime_error){
 	string loginLeitura;
 	string senhaLeitura;
 	string nomeLeitura;
-	string perfilLeitura;
+	int perfilLeitura;
 	string disciplinasLeitura;
 	
-	string f = "usuarios.bin";
-	FILE *file = fopen(f, r);
+	FILE * file = fopen("usuarios.txt", "r");
 
 	if(file==NULL){
 		throw runtime_error("Arquivo Nulo");
@@ -109,14 +108,14 @@ bool InterfaceUsuario::Login(string l, string s)throw(runtime_error){
 	//StreamReader^ file = File::OpenText(f);
 	
 	do {
-		fscanf(file, "%[^|]%[^|]%[^|]%[^|]%[^\n]",
+		fscanf(file, "%s|%s|%s|%d|%[^\n]",
 			&loginLeitura, 
 			&senhaLeitura, 
 			&nomeLeitura,
 			&perfilLeitura,
 			&disciplinasLeitura);
 			
-		if (loginLeitura == l) && (senhaLeitura == s){
+		if ((loginLeitura == l) && (senhaLeitura == s)){
 			user.setNome(nomeLeitura);
 			user.setLogin(l);
 			user.setSenha(s);
@@ -126,27 +125,34 @@ bool InterfaceUsuario::Login(string l, string s)throw(runtime_error){
 			user.carregarDisciplinas(disciplinasLeitura);
 			
 			//user.setLogado(true);
-			file.close();
+			fclose(file);
 			return true;
 		}
-	} while (loginLeitura != EOF);
+	} while (loginLeitura != "");
 
-	file.close();
+	fclose(file);
 	return false;
 }
 
 //Adiciona um usuario no arquivo de usuarios, para que ele possa, futuramente,
 //logar e utilizar o sistema
 void InterfaceUsuario::Cadastrar(string l, string s, string n, int p)throw(runtime_error){
-	
-	FILE *f = fopen("usuarios.bin", a);
+	cout << l << endl;
+	cout << s << endl;
+	cout << n << endl;
+	cout << p << endl;
+	FILE * f = fopen("usuarios.txt", "a");
 
-	if(f==NULL){
+	/*if(f==NULL){
 		throw runtime_error("Arquivo Nulo");
-	}
+	}*/
 
 	//StreamWriter^ f = gcnew StreamWriter("usuarios.bin");
-	f.Write( l + "|" + s + "|" + n + "|" + p );
+	std::stringstream ss;
+	ss << l << "|" << s << "|" << n << "|"<< p << "|" << endl;
+	fputs(ss.str().c_str(), f);
+	ss.str("");
+	//fprintf(f,"%s|%s|%s|%d|", l, s, n, p);
 	
 	/*listaDisciplinas* ld = disc;
 	while (ld != NULL){
@@ -154,8 +160,8 @@ void InterfaceUsuario::Cadastrar(string l, string s, string n, int p)throw(runti
 		f.Write(ld->d.getCodigo());
 		ld = ld->prox;
 	}*/
-	f.Write("\n");
+	fprintf(f, "\n");
 	
-	f.close();
+	fclose(f);
 	return;
 }

@@ -1,4 +1,4 @@
-#include "Quiz.h"
+#include "Quiz.hpp"
 
 const int Quiz::RESPONDER = 1;
 const int Quiz::PULAR = 2;

@@ -1,44 +1,40 @@
-#include "Usuario.h"
+#include "Usuario.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 
 //class Usuario{
-string nome;//[50];
-string login;//[30];
-string senha;//[30];
 enum PERFIL {admin = 1, estudante = 0} perfil;
-bool logado = false;
 
-typedef struct caderno{
-	int ID;
-	caderno* prox;
-} caderno c;
+Usuario::Usuario(){
+	logado = false;
+}
+Usuario::~Usuario(){}
 
-string getNome(){
+string Usuario::getNome(){
 	return nome;
 }
 
-void setNome(string n){
+void Usuario::setNome(string n){
 	nome = n;
 }
 
-string getLogin(){
+string Usuario::getLogin(){
 	return login;
 }
 
-void setLogin(string l){//[30]){
+void Usuario::setLogin(string l){//[30]){
 	login = l;
 }
 
-string getSenha(){
+string Usuario::getSenha(){
 	return senha;
 }
 
-void setSenha(string s){//[30]){
+void Usuario::setSenha(string s){//[30]){
 	senha = s;
 }
 
-int getPerfil(){
+int Usuario::getPerfil(){
 
 	if (perfil == admin)
 		return 1;
@@ -47,7 +43,7 @@ int getPerfil(){
 		
 }
 
-void setPerfil(char p){
+void Usuario::setPerfil(char p){
 	if (p == 'a')
 		perfil = admin;
 	else
@@ -60,12 +56,12 @@ void Usuario(){
 
 //Retorna uma string, pulando linhas, de cada nome de disciplina na
 //lista de disciplinas do usuario, de uma vez
-string listarDisciplinas(){
+string Usuario::listarDisciplinas(){
 	string minhasDisciplinas = "";
 	caderno* buscador;
 	
 	while(buscador != NULL) {
-		minhasDisciplinas += buscador->d->nome+"\n";
+		minhasDisciplinas += buscador->ID+"\n";
 		buscador = buscador->prox;
 	}
 	
@@ -76,31 +72,32 @@ string listarDisciplinas(){
 //Acrescenta uma disciplina na lista de disciplinas do usuario
 //Procura-se uma disciplina no Gerenciador de Disciplinas,
 //utilizando o codigo recebido por parametro
-void adicionarDisciplina(int codigo){
+void Usuario::adicionarDisciplina(int codigo){
 
-	caderno* procurador = ld;
+	caderno* procurador = c;
 	while(procurador != NULL){
 		procurador = procurador->prox;
 	}
-	procurador = malloc(sizeof(caderno));
+	procurador = new caderno;//malloc(sizeof(caderno));
 	
-	procurador->d = GerDisciplinas.getDisciplina(codigo);
+	procurador->ID = codigo;//GerDisciplinas.getDisciplina(codigo);
 
 	return;
 }
 
-void carregarDisciplinas(string disciplinasLeitura){
-	int leitor;
+void Usuario::carregarDisciplinas(string disciplinasLeitura){
+	int leitor = 0;
 	char contador;
-	caderno* lds = malloc(sizeof(caderno));
+	caderno* lds = new caderno;//malloc(sizeof(caderno));
+	//FILE * disc = fopen(disciplinasLeitura, "r");
 	c = lds;
-	do(leitor != NULL){
-		fscanf(disciplinasLeitura,"%d",&leitor);
+	/*do{
+		//fscanf(disciplinasLeitura,"%d",&leitor);
 		lds->ID = leitor;
-		lds->prox = malloc(sizeof(caderno));
+		lds->prox = new caderno;//malloc(sizeof(caderno));
 		lds = lds->prox;
-		fscanf(disciplinasLeitura,"%[^|]",&leitor);
-	} while ((contador = fgetc(disciplinasLeitura)) != EOF);//"\n");
+		//fscanf(disciplinasLeitura,"%[^|]",&leitor);
+	} while ((contador = fgetc(disciplinasLeitura)) != EOF);//"\n");*/
 	free(lds);
 	return;
 }
@@ -116,7 +113,7 @@ string decriptaSenha(string s){
 	return;
 }*/
 
-
+/*
 //Metodos de "gerenciamento" de Disciplinas e Quizzes, onde o admin
 //Pode fazer alteracoes nos arquivos de Disciplinas e Quizzes
 void criarDisciplina (string nome, GerenciaDisciplinas disc){
@@ -170,7 +167,7 @@ void deletarQuiz (string pergunta, GerQuiz quiz){
 	}
 		
 	return;
-}
+}*/
 
 //}
 

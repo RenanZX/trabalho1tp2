@@ -13,8 +13,7 @@ const int InterfaceAdmin::VOLTAR = 9;
 const int InterfaceAdmin::SAIR = 0;
 
 
-void InterfaceAdmin::mostrarOpcoes(Usuario u, bool* fechar)throw(runtime_error)
-{
+void InterfaceAdmin::mostrarOpcoes(Usuario& u, bool* fechar)throw(runtime_error){
 	fechaSessao = false;
 	int opt;
 	while(!fechaSessao){
@@ -127,7 +126,7 @@ void InterfaceAdmin::mostrarOpcoes(Usuario u, bool* fechar)throw(runtime_error)
 					
 					break;
 			}
-			executarOpcao(opt);
+			executarOpcao(opt, fechar);
 
 		}catch(invalid_argument &e){
 			system(CLEAR);
@@ -139,11 +138,11 @@ void InterfaceAdmin::mostrarOpcoes(Usuario u, bool* fechar)throw(runtime_error)
 }
 
 
-void InterfaceAdmin::executarOpcao(int opt)throw(runtime_error)
+void InterfaceAdmin::executarOpcao(int opt, bool* fechar)throw(runtime_error)
 {
 	switch(opt){
 
-		case 11:
+		case 11:{
 
 			string l, s, n;
 			int p;
@@ -161,129 +160,135 @@ void InterfaceAdmin::executarOpcao(int opt)throw(runtime_error)
 				cout << "Erro na criação." << endl;
 			}
 
-			break;
+			break;}
 
-		case 12:
+		case 12:{
 
 			listarUsuarios();
 			string l, s, n;
 			int p;
 
-			break;
+			break;}
 
-		case 13:
+		case 13:{
 
 			listarUsuarios();
 
-			break;
+			break;}
 
-		case 21:
+		case 21:{
 
 			while(!fechaAcao){
 				string d;
+				int c;
+				cout << "Digite o código da disciplina: ";
+				cin >> c;
 				cout << "Digite o nome da disciplina (9 = voltar, 0 = sair): ";
 				cin >> d;
-				criarDisciplina(d);
-
-				if (opt == VOLTAR)
+				if (atoi(d.c_str()) == VOLTAR)
 				{
 					fechaAcao = true;
 					break;
 				}
-				if (opt == SAIR)
+				if (atoi(d.c_str()) == SAIR)
 				{
 					*fechar = true;
 					return;
 				}
+				criarDisciplina(d, c);
 			}
 
-			break;
+			break;}
 
-		case 22:
+		case 22:{
 
 			listarDisciplinas();
 			int id;
-			cout << "Digite o código da disciplina a ser alterada: "
+			cout << "Digite o código da disciplina a ser alterada: ";
 			cin >> id;
 			alterarDisciplina(id);
 
-			break;
+			break;}
 
-		case 23:
+		case 23:{
 
 			listarDisciplinas();
 			int id;
-			cout << "Digite o código da disciplina a ser deletada: "
+			cout << "Digite o código da disciplina a ser deletada: ";
 			cin >> id;
 			deletarDisciplina(id);
 
-			break;
+			break;}
 
-		case 24:
+		case 24:{
 
 			listarDisciplinas();
 			int id;
-			cout << "Digite o código da disciplina a receber tópicos: "
+			cout << "Digite o código da disciplina a receber tópicos: ";
 			cin >> id;
 			while(!fechaAcao){
 				string t;
 				cout << "Digite o nome do tópico (9 = voltar, 0 = sair): ";
 				cin >> t;
-				adicionarTopico(id, t);
-
-				if (opt == VOLTAR)
+				if (atoi(t.c_str()) == VOLTAR)
 				{
 					fechaAcao = true;
 					break;
 				}
-				if (opt == SAIR)
+				if (atoi(t.c_str()) == SAIR)
 				{
 					*fechar = true;
 					return;
 				}
+				adicionarTopico(id, t);
 			}
-			
+			break;}
 
-			break;
+		case 31:{
+			GerQuiz* gq = new GerQuiz();
+			gq.criarQuiz();
+			break;}
 
-		case 31:
+		case 32:{
+			GerQuiz* gq = new GerQuiz();
+			gq->EditarPergunta();
+			break;}
 
-			break;
-
-		case 32:
-
-			break;
-
-		case 33:
-
-			listarQuiz();
+		case 33:{
+			GerQuiz* gq = new GerQuiz();
+			gq->DeletarPergunta();
+			/*listarQuiz();
 			int d, t, q;
-			cout << "Digite o código da disciplina: "
+			cout << "Digite o código da disciplina: ";
 			cin >> d;
-			cout << "Digite o código do tópico: "
+			cout << "Digite o código do tópico: ";
 			cin >> t;
-			cout << "Digite o código do quiz a ser deletado: "
+			cout << "Digite o código do quiz a ser deletado: ";
 			cin >> q;
-			deletarQuiz(d, t, q);
+			deletarQuiz(d, t, q);*/
 
-			break;
+			break;}
+		case 34:{
+			GerQuiz *gq = new GerQuiz();
+			gq->AdicionarPergunta();
+			break;}
 
-		default:
+		default:{
 			return;
-			break;
+			break;}
 	}
 }
 
 void InterfaceAdmin::criarUsuario(string l, string s, string n, int p)throw(runtime_error){
 	
-	FILE *f = fopen("usuarios.bin", a);
+	FILE * f = fopen("usuarios.bin", "a");
 
 	if(f==NULL){
 		throw runtime_error("Arquivo Nulo");
 	}
 
 	//StreamWriter^ f = gcnew StreamWriter("usuarios.bin");
-	f.Write( l + "|" + s + "|" + n + "|" + p );
+	fprintf(f,"%s|%s|%s|%d|", l, s, n, p);
 	
 	/*listaDisciplinas* ld = disc;
 	while (ld != NULL){
@@ -291,24 +296,79 @@ void InterfaceAdmin::criarUsuario(string l, string s, string n, int p)throw(runt
 		f.Write(ld->d.getCodigo());
 		ld = ld->prox;
 	}*/
-	f.Write("\n");
+	fprintf(f, "\n");
 	
-	f.close();
+	fclose(f);
 	return;
 
 }
-void InterfaceAdmin::alterarUsuario(string l, string s, string n, int p);
-void InterfaceAdmin::deletarUsuario(string l);
+void InterfaceAdmin::alterarUsuario(string l, string s, string n, int p){}
+void InterfaceAdmin::deletarUsuario(string l){}
 
-void InterfaceAdmin::criarDisciplina(string n);
-void InterfaceAdmin::alterarDisciplina(int i);
-void InterfaceAdmin::deletarDisciplina(int i);
-void InterfaceAdmin::adicionarTopico(int i, string t);
+void InterfaceAdmin::criarDisciplina(string n, int c){
+	//Disciplina disciplina;
+	FILE * arquivo_disciplinas;
+    
+	//Verificar se já existe disciplina depois
 
-void InterfaceAdmin::criarQuiz(int d, int t, Quiz q);
-void InterfaceAdmin::alterarQuiz(int d, int t, int q, Quiz qn);
-void InterfaceAdmin::deletarQuiz(int d, int t, int q);
+	try {
+		arquivo_disciplinas = fopen("disciplinas.bin", "a");
+		//disciplina = new Disciplina();
+		//disciplina.setNome(n);
+		//disciplina.setCodigo(c);
+		fprintf(arquivo_disciplinas, "%d|%s\n", c, n);
+		fclose(arquivo_disciplinas);
+	}
+	catch (invalid_argument excecao) {
+		cout << excecao.what() << endl;
+	}
 
-void InterfaceAdmin::listarUsuarios();
-void InterfaceAdmin::listarDisciplinas();
-void InterfaceAdmin::listarQuiz();
+}
+void InterfaceAdmin::alterarDisciplina(int i){}
+void InterfaceAdmin::deletarDisciplina(int i){}
+void InterfaceAdmin::adicionarTopico(int i, string t){}
+
+void InterfaceAdmin::criarQuiz(int d, int t, Quiz q){}
+void InterfaceAdmin::alterarQuiz(int d, int t, int q, Quiz qn){}
+void InterfaceAdmin::deletarQuiz(int d, int t, int q){}
+
+void InterfaceAdmin::listarUsuarios(){
+	FILE * fusers = fopen ("usuarios.bin", "r");
+
+	string l, s, n;
+	int p;
+
+		fscanf (fusers, "%s|%s|%s|%d|", &l, &s, &n, &p);
+	do{
+		cout << "Nome: " << n << "; Login: " << l; //<< "; Senha: " << s;
+		cout << "; Admin: " << ((p) ? "SIM" : "NÃO") << endl;
+		fscanf (fusers, "%s|%s|%s|%d|", &l, &s, &n, &p);
+	} while (l != "");
+	fclose(fusers);
+}
+void InterfaceAdmin::listarDisciplinas(){
+	FILE * fdisc = fopen ("disciplinas.bin", "r");
+
+	string d;
+	int c;
+
+		fscanf (fdisc, "%d|%s", &c, &d);
+	do{
+		cout << "Código: " << c << "; Nome: " << d << endl;;
+		fscanf (fdisc, "%d|%s", &c, &d);
+	} while (c != NULL);
+	fclose(fdisc);
+}
+void InterfaceAdmin::listarQuiz(){
+	FILE * fquiz = fopen ("quiz.bin", "r");
+
+	int d, t, q;
+	string p;
+
+		fscanf (fquiz, "%d|%d|%d|%s|", &d, &t, &q, &p);
+	do{
+		cout << "Disciplina: " << d << "; Tópico: " << t << "; Número: " << q << "; Pergunta: " << p << endl;
+		fscanf (fquiz, "%d|%d|%d|%s|", &d, &t, &q, &p);
+	} while (d != NULL);
+	fclose(fquiz);
+}

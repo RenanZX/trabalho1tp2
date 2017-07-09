@@ -4,14 +4,14 @@
 #include "InterfaceUsuario.hpp"
 
 
-void main(){
+int main(){
 
 	while(true){
 		//Chama impressora da InterfaceUsuario
 			/// serão mostradas as opções que o usuário tem:
 			/// Cadastrar; Logar; Sair
-		InterfaceUsuario u = new InterfaceUsuario();
-		u.mostrarOpcoes();
+		InterfaceUsuario* u = new InterfaceUsuario();
+		u->mostrarOpcoes();
 		//InterfaceUsuario::opções();
 
 		//Ao logar (ou após cadastro), chama opções referentes
@@ -26,5 +26,5 @@ void main(){
 
 	}
 
-	return;
+	return 0;
 }

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <stdexcept>
-#include "GerenciaDiciplinas.h"
+#include "Disciplina.hpp"
 
 using namespace std;
 

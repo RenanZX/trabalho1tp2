@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <string.h>
-
+#include <string>
+using namespace std;
 class Usuario{
 	private:
 		string nome;
@@ -11,7 +11,11 @@ class Usuario{
 		enum PERFIL {admin, estudante} perfil;
 		bool logado;
 
-		typedef struct caderno;
+		typedef struct cad{
+			int ID;
+			cad* prox;
+		} caderno;
+		caderno* c;
 
 	public:
 		string getNome();
@@ -24,6 +28,7 @@ class Usuario{
 		void setPerfil(char);
 
 		Usuario();
+		~Usuario();
 		Usuario(string, string, string, int);
 
 
@@ -33,7 +38,7 @@ class Usuario{
 
 		void carregarDisciplinas(string);
 
-		void criarDisciplina (string, GerenciaDisciplinas);
+/*		void criarDisciplina (string, GerenciaDisciplinas);
 
 		void alterarDisciplina (string);//, listaTopicos*, listaQuizzes*);
 
@@ -44,5 +49,5 @@ class Usuario{
 
 		void alterarQuiz (string, bool, string, string, GerQuiz);
 	
-		void deletarQuiz (string, GerQuiz);
+		void deletarQuiz (string, GerQuiz);*/
 };
