@@ -42,7 +42,7 @@ public:
     void executarOpcao(int opcao)throw(runtime_error);
 };
 
-class InterfaceEstudo:public Interface
+class InterfaceQuiz:public Interface
 {
 private:
     static const int COMECARQUIZ;
