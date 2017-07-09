@@ -1,4 +1,4 @@
-#include "GerenciadorQuiz.h"
+#include "GerenciadorQuiz.hpp"
 
 const string TabelaDisciplinasTopicos::TABLETOPICOS = "tabletop"; /*constantes*/
 const string TabelaDisciplinasTopicos::TABLEDISCIPLINAS = "tabledisc";

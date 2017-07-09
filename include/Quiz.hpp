@@ -1,6 +1,6 @@
 #ifndef QUIZ_H
 #define QUIZ_H
-#include "GerenciadorQuiz.h"
+#include "GerenciadorQuiz.hpp"
 #include <iostream>
 #include <string>
 #include <stdlib.h>
