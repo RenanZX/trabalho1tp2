@@ -1,4 +1,4 @@
-#include "GerenciadorQuiz.hpp"
+#include "GerenciadorQuiz.h"
 
 const string TabelaDisciplinasTopicos::TABLETOPICOS = "tabletop"; /*constantes*/
 const string TabelaDisciplinasTopicos::TABLEDISCIPLINAS = "tabledisc";
@@ -185,12 +185,14 @@ void GerQuiz::CriaQuiz(string nomequiz)throw(invalid_argument)
 
 void GerQuiz::SetQuiz(string nomequiz)throw(invalid_argument)
 {
+    if(nomequiz == "") throw invalid_argument("Erro,Nao e possivel setar o quiz");
     arquivo = diretorio+"/"+nomequiz;
 }
 
 void GerQuiz::SetPerguntaQuiz(string perguntarquivo)throw(invalid_argument)
 {
     FILE *f = fopen(arquivo.c_str(),"r+");
+    if(perguntarquivo=="") throw invalid_argument("Erro!Pergunta Nula!");
     if(f!=NULL){
         fseek(f,0,SEEK_END);/*procura a ultima posicao do arquivo lido*/
         fputs(perguntarquivo.c_str(),f);/*escreve a string de saida no arquivo*/
@@ -311,8 +313,9 @@ string GerQuiz::getQuizesFilesName()
     return nomesarquivos;
 }
 
-void GerQuiz::EditarPergunta(string index,string pergunta)
+void GerQuiz::EditarPergunta(string index,string pergunta)throw(invalid_argument)
 {
+    if((pergunta == "")||(index == "")) throw invalid_argument("Erro indice ou pergunta invalidos");
     ReorganizarPerguntaArquivo(indice+index,pergunta);
 }
 
@@ -350,7 +353,7 @@ void GerQuiz::DeletarQuizSetado()throw(invalid_argument)
     }
 }
 
-void GerQuiz::SetIndexTopicDisc(string index)
+void GerQuiz::SetIndexTopicDisc(string index)throw(invalid_argument)
 {
     indice = index+".";
     FILE *f = fopen(tabelarelationquiz.c_str(),"r+");
@@ -361,6 +364,9 @@ void GerQuiz::SetIndexTopicDisc(string index)
     string verificar,arquivonome,verificarind;
     arquivonome = arquivo.substr(arquivo.find("/")+1,arquivo.length());
 
+    if(index == "") {
+        throw invalid_argument("Indice invalido");
+    }
     if(f==NULL){
         fclose(f);
         f = fopen(tabelarelationquiz.c_str(),"w+");

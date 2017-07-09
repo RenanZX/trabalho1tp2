@@ -1,4 +1,4 @@
-#include "Quiz.hpp"
+#include "Quiz.h"
 
 Resposta::~Resposta()
 {
