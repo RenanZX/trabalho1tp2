@@ -11,9 +11,10 @@
 #include <stdlib.h>
 #include <sstream>
 #include <stdexcept>
+#include "ControleInterfaceUsuario.h"
 using namespace std;
 
-/*interfaces que ir„o interagir com o usuario*/
+/*interfaces que ir√£o interagir com o usuario*/
 class InterfaceEstudo{//:public InterfacePrograma{
 private:
 	/*constantes*/
