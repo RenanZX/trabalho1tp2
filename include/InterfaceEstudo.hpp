@@ -23,7 +23,6 @@ private:
 
 	bool fecha;
 	Usuario user;
-	Quiz quiz;
 
 	void listarUsuarios();
 	void listarDisciplinas();
