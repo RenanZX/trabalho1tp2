@@ -10,14 +10,14 @@ const int InterfaceGerenteQuiz::EDITQUIZ = 4;
 const int InterfaceGerenteQuiz::SELQUIZ = 3;
 const int InterfaceGerenteQuiz::DELQUIZ = 5;
 const int InterfaceGerenteQuiz::SAIR = 6;
-const int InterfaceEstudo::COMECARQUIZ = 1;
-const int InterfaceEstudo::CARREGAP = 2;
-const int InterfaceEstudo::SELP = 3;
-const int InterfaceEstudo::SAIR = 4;
-const int InterfaceEstudo::RESPONDER = 1;
-const int InterfaceEstudo::PULAR = 2;
-const int InterfaceEstudo::SAIRP = 3;
-const int InterfaceEstudo::SELECIONARQUIZ = 3;
+const int InterfaceQuiz::COMECARQUIZ = 1;
+const int InterfaceQuiz::CARREGAP = 2;
+const int InterfaceQuiz::SELP = 3;
+const int InterfaceQuiz::SAIR = 4;
+const int InterfaceQuiz::RESPONDER = 1;
+const int InterfaceQuiz::PULAR = 2;
+const int InterfaceQuiz::SAIRP = 3;
+const int InterfaceQuiz::SELECIONARQUIZ = 3;
 
 void InterfaceGerenteQuiz::AdicionarPerguntas()throw(runtime_error)
 {
@@ -138,7 +138,7 @@ void InterfaceGerenteQuiz::EditarPerguntas()throw(runtime_error)
         pergunta.append(indice+data);
         pergunta.append("|");
         data = gerente->BuscarPergunta(data);/*busca a pergunta no arquivo*/
-        if(data == ""){/*testa se a pergunta e nula e lança uma excessao*/
+        if(data == ""){/*testa se a pergunta e nula e lanÃ§a uma excessao*/
             throw invalid_argument("Erro!Pergunta Inexistente.");
         }else{
             system(CLEAR);
@@ -328,7 +328,7 @@ void InterfaceGerenteQuiz::SelecionarQuiz()throw(runtime_error)
         cout << "Quiz selecionado com sucesso!" << endl;/*caso de sucesso imprime para o usuario*/
         PAUSE;
     }else{
-        throw invalid_argument("Erro!Falha na seleção do Quiz");/*caso de falha lanca uma excessão*/
+        throw invalid_argument("Erro!Falha na seleÃ§Ã£o do Quiz");/*caso de falha lanca uma excessÃ£o*/
     }
 }
 
@@ -512,7 +512,7 @@ void InterfaceEstudo::selecionarTopicosDisciplinas()throw(invalid_argument)
     int total = 0,entrada = 0;
     std::stringstream strstream;
 
-    cout << "Disciplinas disponíveis" << endl;/*mostra as disciplinas disponiveis*/
+    cout << "Disciplinas disponÃ­veis" << endl;/*mostra as disciplinas disponiveis*/
     while(fgets(linha,sizeof(linha),f)){
         print = linha;
         i = atoi(print.substr(0,print.find("|")).c_str()) +1;
@@ -529,7 +529,7 @@ void InterfaceEstudo::selecionarTopicosDisciplinas()throw(invalid_argument)
     quiz->SelecionarDisciplina(strstream.str());
     fclose(f);
     f = fopen("tabletop","r+");
-    cout << "Topicos disponíveis" << endl;
+    cout << "Topicos disponÃ­veis" << endl;
     while(fgets(linha,sizeof(linha),f)){/*abre a tabela e topicos e solicita ao usuario selecionar tambem*/
         print = linha;
         i = atoi(print.substr(0,print.find("|")).c_str()) +1;
@@ -592,7 +592,7 @@ string InterfaceEstudo::SelecionarQuiz()throw(invalid_argument)
         cout << "Quiz selecionado com sucesso!" << endl;/*caso de sucesso imprime para o usuario*/
         PAUSE;
     }else{
-        throw invalid_argument("Erro!Falha na seleção do Quiz");/*caso de falha lanca uma excessão*/
+        throw invalid_argument("Erro!Falha na seleÃ§Ã£o do Quiz");/*caso de falha lanca uma excessÃ£o*/
     }
     return saida;
 }
