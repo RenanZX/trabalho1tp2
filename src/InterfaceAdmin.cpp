@@ -138,9 +138,10 @@ void InterfaceAdmin::mostrarOpcoes(Usuario& u, bool* fechar)throw(runtime_error)
 }
 
 
+
 void InterfaceAdmin::executarOpcao(int opt, bool* fechar)throw(runtime_error)
 {
-	switch(opt){
+	switch(opcao){
 
 		case 11:{
 

@@ -28,7 +28,7 @@ private:
 public:
 	void mostrarOpcoes()throw(runtime_error);
 	//void mostrarOpcoes(Usuario)throw(runtime_error);
-	void executarOpcao(int)throw(runtime_error);
+	void executarOpcao(int opcao)throw(runtime_error);
 };
 
 #endif //INTERFACEUSUARIO_H

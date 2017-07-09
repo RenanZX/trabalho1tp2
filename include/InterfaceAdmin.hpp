@@ -14,6 +14,7 @@ using namespace std;
 
 /*interfaces que irão interagir com o usuario*/
 class InterfaceAdmin{//:public InterfacePrograma{
+
 private:
 	/*constantes*/
 	static const char USUARIOS;
